@@ -24,6 +24,15 @@ app.use(
   })
 );
 
+// Middleware untuk memberikan informasi user dan path saat ini
+app.use((req, res, next) => {
+  res.locals.currentPath = req.path; // Path saat ini
+  res.locals.isLoggedIn = !!req.session.username; // Menggunakan username yang konsisten
+  res.locals.userName = req.session.username || null; // Tambahkan username ke res.locals
+  next();
+});
+
+
 // Built-in Middleware
 app.use(express.static("public"));
 
@@ -34,15 +43,37 @@ app.set("view engine", "ejs");
 app.use("/film", adminRoutes); // Rute untuk film
 app.use("/", authRoutes); // Rute autentikasi
 
-// Route untuk halaman utama (Login)
+// Route untuk halaman utama (Movie)
 app.get("/", (req, res) => {
-  res.render("login", { layout: "layouts/main-layout" });
+  const sql = "SELECT * FROM films";
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching films:", err);
+      return res.status(500).send("Internal Server Error");
+    }
+    // Kirim data films ke view
+    res.render("movie", { layout: "layouts/main-layout", films: results });
+  });
+});
+
+// Route untuk halaman Login
+app.get('/login', (req, res) => {
+  res.render('login', { layout: false }); // Tanpa layout
+});
+
+// Route untuk halaman Signup
+app.get('/signup', (req, res) => {
+  res.render('signup', { layout: false }); // Tanpa layout
 });
 
 // Route untuk halaman Home
 app.get("/home", isAuthenticated, (req, res) => {
-  res.render("home", { layout: "layouts/main-layout" });
+  res.render("home", {
+    layout: "layouts/main-layout",
+    username: req.session.user ? req.session.user.username : 'User', // Ambil username dari session
+  });
 });
+
 
 // Route halaman admin
 app.get("/admin", isAuthenticated, (req, res) => {
@@ -55,120 +86,6 @@ app.get("/admin", isAuthenticated, (req, res) => {
       layout: "layouts/main-layout",
       films: film, // Kirimkan data film ke view
     });
-  });
-});
-
-// Endpoint untuk mendapatkan data tabel users
-app.get("/users", (req, res) => {
-  const sql = "SELECT * FROM users";
-  db.query(sql, (err, results) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json(results);
-    }
-  });
-});
-
-// CREATE: Tambah film baru
-app.post("/films", (req, res) => {
-  const { id_kursi, id_jadwal, title, genre, duration, description } = req.body;
-  const sql =
-    "INSERT INTO films (id_kursi, id_jadwal, title, genre, duration, description) VALUES (?, ?, ?, ?, ?, ?)";
-  db.query(
-    sql,
-    [id_kursi, id_jadwal, title, genre, duration, description],
-    (err, result) => {
-      if (err) {
-        console.error("Error inserting film:", err);
-        res.status(500).send("Internal Server Error");
-      } else {
-        res.status(201).json({
-          id_film: result.insertId,
-          id_kursi,
-          id_jadwal,
-          title,
-          genre,
-          duration,
-          description,
-        });
-      }
-    }
-  );
-});
-
-// READ: Ambil semua film
-app.get("/films", (req, res) => {
-  const sql = "SELECT * FROM films";
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error("Error fetching films:", err);
-      res.status(500).send("Internal Server Error");
-    } else {
-      res.json(results);
-    }
-  });
-});
-
-// READ: Ambil film berdasarkan ID
-app.get("/films/:id_film", (req, res) => {
-  const { id_film } = req.params;
-  const sql = "SELECT * FROM films WHERE id_film = ?";
-  db.query(sql, [id_film], (err, results) => {
-    if (err) {
-      console.error("Error fetching film:", err);
-      res.status(500).send("Internal Server Error");
-    } else if (results.length === 0) {
-      res.status(404).send("Film not found");
-    } else {
-      res.json(results[0]);
-    }
-  });
-});
-
-// UPDATE: Update data film
-app.put("/films/:id_film", (req, res) => {
-  const { id_film } = req.params;
-  const { id_kursi, id_jadwal, title, genre, duration, description } = req.body;
-  const sql =
-    "UPDATE films SET id_kursi = ?, id_jadwal = ?, title = ?, genre = ?, duration = ?, description = ? WHERE id_film = ?";
-  db.query(
-    sql,
-    [id_kursi, id_jadwal, title, genre, duration, description, id_film],
-    (err, result) => {
-      if (err) {
-        console.error("Error updating film:", err);
-        res.status(500).send("Internal Server Error");
-      } else if (result.affectedRows === 0) {
-        res.status(404).send("Film not found");
-      } else {
-        res.json({
-          id_film,
-          id_kursi,
-          id_jadwal,
-          title,
-          genre,
-          duration,
-          description,
-        });
-      }
-    }
-  );
-});
-
-// DELETE: Hapus film
-app.delete("/films/:id_film", (req, res) => {
-  const { id_film } = req.params;
-  const sql = "DELETE FROM films WHERE id_film = ?";
-  db.query(sql, [id_film], (err, result) => {
-    if (err) {
-      console.error("Error deleting film:", err);
-      res.status(500).send("Internal Server Error");
-    } else if (result.affectedRows === 0) {
-      res.status(404).send("Film not found");
-    } else {
-      res.sendStatus(204);
-    }
   });
 });
 

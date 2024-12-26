@@ -30,6 +30,7 @@ router.post("/signup", async (req, res) => {
 router.get("/signup", (req, res) => {
   res.render("signup", {
     layout: "layouts/main-layout",
+    user: null, // Tidak ada user yang login
   });
 });
 
@@ -65,23 +66,32 @@ router.post("/login", (req, res) => {
 
 // Route untuk menampilkan form login
 router.get("/login", (req, res) => {
-  const successMessage = req.session.successMessage;
-  req.session.successMessage = null; // Hapus pesan setelah ditampilkan
   res.render("login", {
     layout: "layouts/main-layout",
-    successMessage,
+    successMessage: req.session.successMessage || null,
+    user: null, // Tidak ada user yang login
   });
 });
 
 // Route untuk halaman Home
 router.get("/home", isAuthenticated, (req, res) => {
   const username = req.session.username; // Ambil username dari session
-  res.render("home", { 
-    layout: "layouts/main-layout", 
-    username // Kirimkan username ke view
+
+  // Query database untuk mengambil daftar film
+  db.query("SELECT * FROM films", (err, results) => {
+    if (err) {
+      console.error("Database Error (Fetching Films):", err.message);
+      return res.status(500).send("Error fetching films");
+    }
+
+    // Pastikan data film dikirim ke view
+    res.render("home", {
+      layout: "layouts/main-layout",
+      username, // Kirimkan username ke view
+      films: results, // Kirimkan daftar film ke view
+    });
   });
 });
-
 
 // Route Logout
 router.post("/logout", (req, res) => {
