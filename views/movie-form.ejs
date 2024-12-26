@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buy Ticket</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>Buy Ticket</h1>
+    <form action="/ticket/checkout" method="post">
+      <input type="hidden" name="movieId" value="<%= movieId %>">
+      <div class="mb-3">
+        <label for="name" class="form-label">Your Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+      </div>
+      <div class="mb-3">
+        <label for="quantity" class="form-label">Number of Tickets</label>
+        <input type="number" class="form-control" id="quantity" name="quantity" required min="1">
+      </div>
+      <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+    </form>
+  </div>
+</body>
+</html>
