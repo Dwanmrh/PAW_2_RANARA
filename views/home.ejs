@@ -1,21 +1,61 @@
 <div class="container mt-5">
-  <h1 class="text-center mb-4">MOVIE DISPLAY</h1>
+  <h1 class="text-center mb-4 text-dark">DAFTAR FILM</h1>
   <div class="row">
     <% films.forEach((film) => { %>
-      <div class="col-md-4 mb-4">
-        <div class="card h-100">
-          <img src="<%= film.image_url || '/default-image.jpg' %>" class="card-img-top" alt="<%= film.title %>">
-          <div class="card-body">
-            <h5 class="card-title"><%= film.title %></h5>
-            <p class="card-text text-truncate" style="max-height: 3.6em;"><%= film.description %></p>
-            <button class="btn btn-link p-0 text-primary" onclick="showSynopsis('<%= film.id_film %>')">Lihat Sinopsis</button>
-          </div>
-          <div class="card-footer text-center">
-            <button class="btn btn-primary" onclick="">Order</button>
-          </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow movie-card">
+        <img
+          src="<%= film.image_url || '/default-image.jpg' %>"
+          class="card-img-top"
+          alt="<%= film.title %>"
+        />
+        <div class="card-body">
+          <h5 class="card-title text-primary"><%= film.title %></h5>
+          <p class="card-text text-truncate" style="max-height: 3.6em">
+            <%= film.description %>
+          </p>
+          <button
+            class="btn btn-link p-0 text-primary"
+            onclick="showSynopsis('<%= film.id_film %>')"
+          >
+            Lihat Sinopsis
+          </button>
+        </div>
+        <div class="card-footer text-center">
+          <button class="btn btn-primary">Order</button>
         </div>
       </div>
+    </div>
     <% }); %>
+  </div>
+</div>
+
+<!-- Bootstrap Modal -->
+<div
+  class="modal fade"
+  id="synopsisModal"
+  tabindex="-1"
+  aria-labelledby="synopsisModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-light">
+        <h5 class="modal-title" id="synopsisModalLabel">Sinopsis Film</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body" id="synopsisContent"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Tutup
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
