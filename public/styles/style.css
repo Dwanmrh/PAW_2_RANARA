@@ -1,79 +1,82 @@
 /* General styling */
 body {
-    background-color: #f8f9fa;
-    font-family: "Arial", sans-serif;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    margin: 0;
-  }
-  
-  h1,
-  h5 {
-    color: #2c3e50;
-  }
-  
-  /* Card styles */
-  .movie-card {
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-  }
-  
-  .movie-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  #movie-details {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  #buy-ticket {
-    margin-top: 15px;
-  }
-  
-  /* Forms */
-  form {
-    max-width: 500px;
-    margin: auto;
-  }
-  
-  label {
-    font-weight: bold;
-  }
-  
-  /* Buttons */
-  .btn-primary {
-    background-color: #3498db;
-    border: none;
-  }
-  
-  .btn-primary:hover {
-    background-color: #2980b9;
-  }
-  
-  .btn-success {
-    background-color: #27ae60;
-    border: none;
-  }
-  
-  .btn-success:hover {
-    background-color: #229954;
-  }
+  background-color: #f8f9fa;
+  font-family: "Arial", sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
+h1,
+h5 {
+  color: #2c3e50;
+}
+
+/* Card styles */
+.movie-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#movie-details {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#buy-ticket {
+  margin-top: 15px;
+}
+
+/* Forms */
+form {
+  max-width: 500px;
+  margin: auto;
+}
+
+label {
+  font-weight: bold;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #3498db;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+.btn-success {
+  background-color: #27ae60;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #229954;
+}
 
 /* Memastikan footer tidak muncul kecuali pengguna scroll */
 footer {
-  position: relative; /* Agar mengikuti alur halaman */
-  transform: translateY(100%); /* Geser footer ke luar layar */
-  transition: transform 0.3s ease-in-out; /* Efek transisi saat muncul */
-  background-color: #174475;
+position: relative; /* Agar mengikuti alur halaman */
+transform: translateY(100%); /* Geser footer ke luar layar */
+transition: transform 0.3s ease-in-out; /* Efek transisi saat muncul */
+background-color: #174475;
 }
 
 footer:target,
 footer.visible {
-  transform: translateY(0); /* Footer akan muncul saat scroll ke bawah */
+transform: translateY(0); /* Footer akan muncul saat scroll ke bawah */
 }
 
-  
+.completed {
+text-decoration: line-through;
+color: gray;
+}

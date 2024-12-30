@@ -15,56 +15,77 @@
   <body>
     <div class="d-flex flex-column min-vh-100">
       <% if (currentPath !== '/login' && currentPath !== '/signup') { %>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="/">RANARA CINEMA</a>
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav ms-auto">
-                <% if (isLoggedIn) { %>
-                  <li class="nav-item">
-                    <a class="nav-link <%= currentPath === '/home' ? 'active' : '' %>" href="/home">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link <%= currentPath === '/movie-form' ? 'active' : '' %>" href="/movie-form">Order</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link <%= currentPath === '/ticket' ? 'active' : '' %>" href="/ticket">Ticket</a>
-                  </li>
-                  <li class="nav-item">
-                    <form action="/logout" method="POST" class="d-inline">
-                      <button type="submit" class="btn btn-link nav-link">Logout</button>
-                    </form>
-                  </li>
-                <% } else { %>
-                  <li class="nav-item">
-                    <a class="nav-link <%= currentPath === '/login' ? 'active' : '' %>" href="/login">Login</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link <%= currentPath === '/signup' ? 'active' : '' %>" href="/signup">Signup</a>
-                  </li>
-                <% } %>
-              </ul>              
-            </div>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">RANARA CINEMA</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <% if (isLoggedIn) { %>
+              <li class="nav-item">
+                <a
+                  class="nav-link <%= currentPath === '/home' ? 'active' : '' %>"
+                  href="/home"
+                  >Home</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link <%= currentPath === '/movie-form' ? 'active' : '' %>"
+                  href="/movie-form"
+                  >Order</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link <%= currentPath === '/ticket' ? 'active' : '' %>"
+                  href="/ticket"
+                  >Ticket</a
+                >
+              </li>
+              <li class="nav-item">
+                <form action="/logout" method="POST" class="d-inline">
+                  <button type="submit" class="btn btn-link nav-link">
+                    Logout
+                  </button>
+                </form>
+              </li>
+              <% } else { %>
+              <li class="nav-item">
+                <a
+                  class="nav-link <%= currentPath === '/login' ? 'active' : '' %>"
+                  href="/login"
+                  >Login</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link <%= currentPath === '/signup' ? 'active' : '' %>"
+                  href="/signup"
+                  >Signup</a
+                >
+              </li>
+              <% } %>
+            </ul>
           </div>
-        </nav>
+        </div>
+      </nav>
       <% } %>
 
       <main class="flex-fill"><%- body %></main>
 
-      <% if (currentPath !== '/login' && currentPath !== '/signup') { %>
-        <%- include('footer') %>
-      <% } %>
+      <% if (currentPath !== '/login' && currentPath !== '/signup') { %> <%-
+      include('footer') %> <% } %>
     </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
