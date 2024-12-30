@@ -61,7 +61,7 @@
 
 <script>
   function showSynopsis(id) {
-    fetch(/films/${id})
+    fetch(`/films/${id}`) 
       .then((response) => response.json())
       .then((data) => {
         document.getElementById("synopsisContent").innerText = data.description;
