@@ -74,12 +74,12 @@ router.post("/add/films", upload.single("picture"), (req, res) => {
 
 // Route Signup
 router.post("/signup", async (req, res) => {
-  const { nama, username, password, email } = req.body;
+  const { nama, username, password, email, role } = req.body; // Add role
 
   try {
     db.query(
-      "INSERT INTO users (nama, username, password, email) VALUES (?, ?, ?, ?)",
-      [nama, username, password, email],
+      "INSERT INTO users (nama, username, password, email, role) VALUES (?, ?, ?, ?, ?)",
+      [nama, username, password, email, role || "user"], // Default role is 'user'
       (err) => {
         if (err) {
           console.error("Database Error (Signup):", err.message);
@@ -93,6 +93,7 @@ router.post("/signup", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 
 // Route untuk menampilkan form signup
 router.get("/signup", (req, res) => {
@@ -127,10 +128,20 @@ router.post("/login", (req, res) => {
 
       req.session.userId = user.id;
       req.session.username = user.username;
-      res.redirect("/home");
+      req.session.role = user.role;  // Pastikan role diset di sini
+      console.log("User Role:", user.role); // Debugging untuk memverifikasi nilai role
+
+
+      // Pastikan pengecekan role benar
+      if (user.role === "admin") {
+        return res.redirect("/admin");  // Arahkan ke halaman admin jika admin
+      } else {
+        return res.redirect("/home");  // Arahkan ke halaman home jika bukan admin
+      }
     }
   );
 });
+
 
 // Route untuk menampilkan form login
 router.get("/login", (req, res) => {

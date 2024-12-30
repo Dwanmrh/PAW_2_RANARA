@@ -1,144 +1,198 @@
-<div class="container mt-5">
-    <h1 class="text-center">Movie List</h1>
-  
-    <!-- Form to Add New Movie -->
-    <form id="addTodoForm" class="my-4">
-      <div class="input-group">
-        <input
-          type="text"
-          id="newTask"
-          class="form-control"
-          placeholder="Add a new task..."
-          required
-        />
-        <div class="input-group-append">
-          <button type="submit" class="btn btn-primary">Add Movie</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center">Welcome, <%= username %></h1>
+    <div class="mt-4 text-center">
+      <a href="/admin/manage-films" class="btn btn-primary">Manage Films</a>
+      <a href="/admin/transactions" class="btn btn-secondary">View Transactions</a>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <h1 class="text-center">Manage Films</h1>
+
+    <!-- Add Movie Form -->
+    <div class="mt-4">
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFilmModal">Add Film</button>
+    </div>
+
+    <div class="mt-4">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>duration</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% films.forEach(film => { %>
+            <tr>
+              <td><%= film.title %></td>
+              <td><%= film.genre %></td>
+              <td><%= film.duration %></td>
+              <td><%= film.description %></td>
+              <td>
+                <button class="btn btn-warning editBtn" data-id="<%= film.id %>">Edit</button>
+                <button class="btn btn-danger deleteBtn" data-id="<%= film.id %>">Delete</button>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal for Add Film -->
+  <div class="modal fade" id="addFilmModal" tabindex="-1" aria-labelledby="addFilmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addFilmModalLabel">Add Film</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addFilmForm">
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" class="form-control" id="title" required>
+            </div>
+            <div class="mb-3">
+              <label for="genre" class="form-label">Genre</label>
+              <input type="text" class="form-control" id="genre" required>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea class="form-control" id="description" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Film</button>
+          </form>
         </div>
       </div>
-    </form>
-  
-    <!-- List of Movies -->
-    <ul id="todoList" class="list-group">
-      <% todos.forEach(todo=> { %>
-      <li
-        class="list-group-item d-flex justify-content-between align-items-center"
-      >
-        <span class="<%= todo.completed ? 'completed' : '' %>">
-          <%= todo.task %>
-        </span>
-        <div>
-          <button
-            class="btn btn-sm btn-success mr-2 editBtn"
-            data-id="<%= todo.id %>"
-          >
-            Edit
-          </button>
-          <button
-            class="btn btn-sm btn-danger deleteBtn"
-            data-id="<%= todo.id %>"
-          >
-            Delete
-          </button>
+    </div>
+  </div>
+
+  <!-- Modal for Edit Film -->
+  <div class="modal fade" id="editFilmModal" tabindex="-1" aria-labelledby="editFilmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editFilmModalLabel">Edit Film</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-      </li>
-      <% }); %>
-    </ul>
-  
-    <!-- Edit Movie Modal -->
-    <div
-      id="editModal"
-      class="modal fade"
-      tabindex="-1"
-      aria-labelledby="editModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editModalLabel">Edit Movie</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form id="editTodoForm">
-              <div class="form-group">
-                <label for="editTask">Task</label>
-                <input type="text" id="editTask" class="form-control" required />
-              </div>
-              <button type="submit" class="btn btn-primary mt-3">
-                Save Changes
-              </button>
-            </form>
-          </div>
+        <div class="modal-body">
+          <form id="editFilmForm">
+            <div class="mb-3">
+              <label for="editTitle" class="form-label">Title</label>
+              <input type="text" class="form-control" id="editTitle" required>
+            </div>
+            <div class="mb-3">
+              <label for="editGenre" class="form-label">Genre</label>
+              <input type="text" class="form-control" id="editGenre" required>
+            </div>
+            <div class="mb-3">
+              <label for="editDescription" class="form-label">Description</label>
+              <textarea class="form-control" id="editDescription" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </form>
         </div>
       </div>
     </div>
   </div>
   
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     $(document).ready(function () {
-      // Add new Movie
-      $("#addMovieForm").on("submit", function (e) {
+      // Handle Add Film
+      $("#addFilmForm").on("submit", function (e) {
         e.preventDefault();
-        const task = $("#newMovie").val().trim();
-        if (task) {
-          $.ajax({
-            url: "/film",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ task: task }),
-            success: function (newTodo) {
-              location.reload(); // Reload to show the new todo
-            },
-            error: function (error) {
-              console.error("Error adding task:", error.responseText);
-            },
-          });
-        }
+        const title = $("#title").val();
+        const genre = $("#genre").val();
+        const duration = $("#duration").val();
+        const description = $("#description").val();
+        const picture = $("#picture").val();
+
+        $.ajax({
+          url: "/add/films",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({ title, genre, duration, description, picture }),
+          success: function () {
+            location.reload(); // Reload to show the updated list
+          },
+          error: function (error) {
+            console.error("Error adding film:", error.responseText);
+          },
+        });
       });
-  
-      // Delete a todo
+
+      // Handle Edit Film
+      let editId;
+      $(".editBtn").on("click", function () {
+        editId = $(this).data("id");
+        const currentTitle = $(this).closest("tr").find("td").eq(0).text();
+        const currentGenre = $(this).closest("tr").find("td").eq(1).text();
+        const currentDuration = $(this).closest("tr").find("td").eq(2);
+        const currentDescription = $(this).closest("tr").find("td").eq(3).text();
+
+        $("#editTitle").val(currentTitle);
+        $("#editGenre").val(currentGenre);
+        $("#editDuration").val(currentDuration);
+        $("#editDescription").val(currentDescription);
+
+        $("#editFilmModal").modal("show");
+      });
+
+      // Handle Update Film
+      $("#editFilmForm").on("submit", function (e) {
+        e.preventDefault();
+        const title = $("#editTitle").val();
+        const genre = $("#editGenre").val();
+        const duration = $("#editDuration").val();
+        const description = $("#editDescription").val();
+
+        $.ajax({
+          url: "/admin/update-film/" + editId,
+          type: "PUT",
+          contentType: "application/json",
+          data: JSON.stringify({ title, genre, duration, description }),
+          success: function () {
+            location.reload(); // Reload to show the updated list
+          },
+          error: function (error) {
+            console.error("Error updating film:", error.responseText);
+          },
+        });
+      });
+
+      // Handle Delete Film
       $(".deleteBtn").on("click", function () {
         const id = $(this).data("id");
+
         $.ajax({
-          url: "/film/" + id,
+          url: "/admin/delete-film/" + id,
           type: "DELETE",
           success: function () {
             location.reload(); // Reload to show updated list
           },
+          error: function (error) {
+            console.error("Error deleting film:", error.responseText);
+          },
         });
-      });
-  
-      // Show edit modal with the current task
-      let editId;
-      $(".editBtn").on("click", function () {
-        editId = $(this).data("id");
-        const currentTask = $(this).closest("li").find("span").text();
-        $("#editMovie").val(currentTask);
-        $("#editModal").modal("show");
-      });
-  
-      // Update Movie on form submission
-      $("#editMovieForm").on("submit", function (e) {
-        e.preventDefault();
-        const task = $("#editMovie").val().trim();
-        if (task) {
-          $.ajax({
-            url: "/film/" + editId,
-            type: "PUT",
-            data: JSON.stringify({ task: task, completed: false }),
-            contentType: "application/json",
-            success: function () {
-              location.reload(); // Reload to show the updated todo
-            },
-          });
-        }
       });
     });
   </script>
-  
+
+</body>
+</html>
