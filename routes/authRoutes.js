@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const db = require("../database/db");
 const { isAuthenticated } = require("../middlewares/middleware");
 const router = express.Router();
+const path = require("path");
+const fs = require("fs");
 
 // Konfigurasi penyimpanan Multer
 const storage = multer.diskStorage({
@@ -28,22 +30,27 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage, fileFilter });
 
 // Route untuk halaman Awal movie
-router.get("/", isAuthenticated, (req, res) => {
-  const username = req.session.username; // Ambil username dari session
-
-  // Query database untuk mengambil daftar film
+router.get("/", (req, res) => {
   db.query("SELECT * FROM films", (err, results) => {
     if (err) {
       console.error("Database Error (Fetching Films):", err.message);
       return res.status(500).send("Error fetching films");
     }
-
-    // Pastikan data film dikirim ke view
     res.render("movie", {
       layout: "layouts/main-layout",
-      username, // Kirimkan username ke view
-      films: results, // Kirimkan daftar film ke view
+      films: results,
     });
+  });
+});
+
+// Route untuk mengambil semua data film
+router.get("/films", (req, res) => {
+  db.query("SELECT * FROM films", (err, results) => {
+    if (err) {
+      console.error("Database Error (Fetching Films):", err.message);
+      return res.status(500).json({ error: "Error fetching films" });
+    }
+    res.json(results); // Kirimkan data sebagai JSON
   });
 });
 
@@ -78,7 +85,7 @@ router.post("/signup", async (req, res) => {
           console.error("Database Error (Signup):", err.message);
           return res.status(500).send("Error registering users");
         }
-        res.redirect("/login"); // Arahkan ke halaman login
+        res.redirect("/login");
       }
     );
   } catch (err) {
@@ -99,7 +106,6 @@ router.get("/signup", (req, res) => {
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
-  // Cari user berdasarkan username
   db.query(
     "SELECT * FROM users WHERE username = ?",
     [username],
@@ -109,22 +115,19 @@ router.post("/login", (req, res) => {
         return res.status(500).send("Error fetching user");
       }
 
-      // Jika user tidak ditemukan
       if (results.length === 0) {
         return res.status(400).send("Invalid username or password");
       }
 
       const user = results[0];
 
-      // Bandingkan password input dengan password di database
       if (password !== user.password) {
         return res.status(400).send("Invalid username or password");
       }
 
-      // Jika username dan password cocok
-      req.session.userId = user.id; // Simpan ID user ke session
-      req.session.username = user.username; // Simpan username ke session
-      res.redirect("/home"); // Redirect ke halaman utama
+      req.session.userId = user.id;
+      req.session.username = user.username;
+      res.redirect("/home");
     }
   );
 });
@@ -134,26 +137,24 @@ router.get("/login", (req, res) => {
   res.render("login", {
     layout: "layouts/main-layout",
     successMessage: req.session.successMessage || null,
-    user: null, // Tidak ada user yang login
+    user: null,
   });
 });
 
 // Route untuk halaman Home
 router.get("/home", isAuthenticated, (req, res) => {
-  const username = req.session.username; // Ambil username dari session
+  const username = req.session.username;
 
-  // Query database untuk mengambil daftar film
   db.query("SELECT * FROM films", (err, results) => {
     if (err) {
       console.error("Database Error (Fetching Films):", err.message);
       return res.status(500).send("Error fetching films");
     }
 
-    // Pastikan data film dikirim ke view
     res.render("home", {
       layout: "layouts/main-layout",
-      username, // Kirimkan username ke view
-      films: results, // Kirimkan daftar film ke view
+      username,
+      films: results,
     });
   });
 });
@@ -162,7 +163,7 @@ router.get("/home", isAuthenticated, (req, res) => {
 router.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) return res.status(500).send("Error logging out");
-    res.redirect("/login"); // Arahkan ke halaman login setelah logout
+    res.redirect("/login");
   });
 });
 

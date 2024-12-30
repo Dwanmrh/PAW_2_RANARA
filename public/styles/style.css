@@ -13,15 +13,53 @@ h5 {
   color: #2c3e50;
 }
 
+.navbar {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar styles */
+.navbar-dark {
+  background-color: #212529; /* Warna gelap navbar */
+}
+
+.navbar-brand {
+  font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #f1c40f;
+}
+
 /* Card styles */
 .movie-card {
   transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .movie-card:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+  border-bottom: 3px solid #3498db;
+}
+
+/* Modal */
+.modal-header {
+  background-color: #174475;
+  color: white;
+}
+
+.modal-footer {
+  background-color: #f1f1f1;
 }
 
 #movie-details {
@@ -34,6 +72,27 @@ h5 {
   margin-top: 15px;
 }
 
+/* Buttons */
+.btn-primary {
+  background-color: #3498db;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+.btn-success {
+  background-color: #27ae60;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+  background-color: #229954;
+}
+
 /* Forms */
 form {
   max-width: 500px;
@@ -44,39 +103,33 @@ label {
   font-weight: bold;
 }
 
-/* Buttons */
-.btn-primary {
-  background-color: #3498db;
-  border: none;
-}
-
-.btn-primary:hover {
-  background-color: #2980b9;
-}
-
-.btn-success {
-  background-color: #27ae60;
-  border: none;
-}
-
-.btn-success:hover {
-  background-color: #229954;
-}
-
-/* Memastikan footer tidak muncul kecuali pengguna scroll */
+/* Footer styles */
 footer {
-position: relative; /* Agar mengikuti alur halaman */
-transform: translateY(100%); /* Geser footer ke luar layar */
-transition: transform 0.3s ease-in-out; /* Efek transisi saat muncul */
-background-color: #174475;
+  position: relative; /* Mengikuti alur halaman */
+  transform: translateY(100%); /* Geser footer ke luar layar */
+  transition: transform 0.3s ease-in-out; /* Efek transisi saat muncul */
+  background-color: #174475;
+  color: white;
+  padding: 20px;
+  text-align: center;
 }
 
 footer:target,
 footer.visible {
-transform: translateY(0); /* Footer akan muncul saat scroll ke bawah */
+  transform: translateY(0); /* Footer akan muncul saat scroll ke bawah */
 }
 
+footer a {
+  color: #f1c40f;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Text decoration for completed tasks */
 .completed {
-text-decoration: line-through;
-color: gray;
+  text-decoration: line-through;
+  color: gray;
 }
