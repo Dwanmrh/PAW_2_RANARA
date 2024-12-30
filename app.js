@@ -7,7 +7,11 @@ const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require('./routes/admin.js');
 const userRoutes = require("./routes/users.js");
 const { isAuthenticated } = require("./middlewares/middleware.js");
+const db = require("./database/db");
+const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
+const router = express.Router();
 
 // Middleware parsing JSON dan form data
 app.use(express.json());
@@ -42,6 +46,27 @@ app.set("layout", "layouts/main-layout");
 app.use("/", authRoutes); // Rute autentikasi (login, logout, dll.)
 app.use("/admin", isAuthenticated, adminRoutes); // Rute admin dengan middleware autentikasi
 app.use("/user", isAuthenticated, userRoutes); // Rute user dengan middleware autentikasi
+
+// Konfigurasi Multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Folder tempat menyimpan file
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // Rename file
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only images are allowed"));
+  }
+};
+
+const upload = multer({ storage, fileFilter });
 
 // Penanganan 404
 app.use((req, res) => {
