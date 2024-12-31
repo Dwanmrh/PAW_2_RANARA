@@ -136,3 +136,109 @@ footer a:hover {
   text-decoration: line-through;
   color: gray;
 }
+
+/*Login*/
+
+/* Background untuk halaman login */
+/* Styling for the container */
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Card styling */
+.card {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  max-width: 1000px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background-color:  #AEC0CD;
+}
+
+/* Left side card (image) */
+.card-left {
+  flex: 1;
+  overflow: hidden;
+}
+
+.card-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Right side card (form) */
+.card-right {
+  flex: 1;
+  padding: 2rem;
+}
+
+/* Additional form styling */
+.form-control {
+  margin-bottom: 1rem;
+}
+
+.btn {
+  width: 100%;
+}
+
+/* Optional: Add some spacing and center the content */
+h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-family: 'Poltawski Nowy';
+  color: black;
+}
+
+p {
+  text-align: center;
+}
+
+/* Mengubah font placeholder hanya pada form input login */
+.card-right input::placeholder {
+  font-family: 'Poppins', sans-serif;; /* Ganti dengan font yang diinginkan */
+  font-size: 12px; /* Ukuran font placeholder */
+  color: #838282;    /* Warna teks placeholder */
+  font-weight: 400; /* Berat font placeholder */
+  font-style: italic;
+}
+
+/* Mengubah warna tombol login */
+.btn {
+  background-color: #213555; /* Ganti dengan warna yang diinginkan */
+  color: white; /* Warna teks pada tombol */
+  border: none; /* Menghilangkan border */
+  font-family: 'Poppins', sans-serif;;
+  font-weight: bold; 
+}
+
+.btn:hover {
+  background-color: #174475; /* Warna saat tombol di-hover */
+}
+
+.text-right {
+  text-align: right; /* Mengatur teks agar rata kanan */
+  margin-top: 20px;   /* Menambahkan jarak atas jika diperlukan */
+  color: white;
+  font-family: 'Poppins', sans-serif;;
+  font-weight: lighter;
+}
+
+/* Mengatur lebar maksimal untuk form dan tombol login */
+.card-right form {
+  width: 100%;
+  max-width: 350px; /* Atur lebar maksimal form */
+  margin: auto;     /* Pusatkan form */
+}
+
+/* Mengatur lebar tombol login */
+.card-right .btn {
+  width: 100%; /* Tombol mengikuti lebar form */
+  max-width: 350px; /* Lebar maksimal tombol */
+  margin-top: auto; /* Jarak antara tombol dan input sebelumnya */
+}
