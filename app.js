@@ -70,7 +70,7 @@ const upload = multer({ storage, fileFilter });
 
 // Penanganan 404
 app.use((req, res) => {
-  res.status(404).render("404", { title: "404 - Page Not Found" });
+  res.status(404).render('404', { title: '404 - Page Not Found' });
 });
 
 // Konfigurasi port

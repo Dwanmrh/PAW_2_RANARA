@@ -96,13 +96,13 @@ router.post("/add/films", upload.single("picture"), (req, res) => {
 
 // Route untuk Update Film
 router.put("/update/films/:id", upload.single("picture"), (req, res) => {
-  const { id_film } = req.params;
+  const { id } = req.params;
   const { title, genre, duration, description } = req.body;
   const picture = req.file ? `public/images/${req.file.filename}` : null;
 
   db.query(
     "UPDATE films SET title = ?, genre = ?, duration = ?, description = ?, picture = ? WHERE id_film = ?",
-    [title, genre, duration, description, picture, id_film],
+    [title, genre, duration, description, picture, id],
     (err) => {
       if (err) {
         console.error("Database Error (Updating Film):", err.message);
@@ -115,9 +115,9 @@ router.put("/update/films/:id", upload.single("picture"), (req, res) => {
 
 // Route untuk Delete Film
 router.delete("/delete/films/:id", (req, res) => {
-  const { id_film } = req.params;
+  const { id } = req.params;
 
-  db.query("DELETE FROM films WHERE id_film = ?", [id_film], (err) => {
+  db.query("DELETE FROM films WHERE id_film = ?", [id], (err) => {
     if (err) {
       console.error("Database Error (Deleting Film):", err.message);
       return res.status(500).json({ error: "Error deleting film" });

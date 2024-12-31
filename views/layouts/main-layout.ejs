@@ -16,7 +16,7 @@
     <div class="d-flex flex-column min-vh-100">
       <!-- footer tidak akan muncul di halaman ini -->
       <% if (!['/login', '/signup', '/'].includes(currentPath)) { %>
-      <nav class="navbar navbar-expand-lg navbar-dark shadow">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
         <div class="container-fluid">
           <a class="navbar-brand" href="/">RANARA CINEMA</a>
           <button
@@ -33,32 +33,20 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a
-                  class="nav-link <%= currentPath === '/home' ? 'active' : '' %>"
-                  href="/home"
-                  >Home</a
-                >
+                <a class="nav-link <%= currentPath === '/home' ? 'active' : '' %>" href="/home">Home</a>
               </li>
               <li class="nav-item">
-                <a
-                  class="nav-link <%= currentPath === '/order' ? 'active' : '' %>"
-                  href="/order"
-                  >Order</a
-                >
+                <a class="nav-link <%= currentPath === '/movie-form' ? 'active' : '' %>"href="/movie-form">Order</a>
               </li>
               <li class="nav-item">
-                <a
-                  class="nav-link <%= currentPath === '/ticket' ? 'active' : '' %>"
-                  href="/ticket"
-                  >Ticket</a
-                >
- <!-- Tampilkan link admin hanya jika pengguna adalah admin -->
+                <a class="nav-link <%= currentPath === '/ticket' ? 'active' : '' %>" href="/ticket">Ticket</a>
+                
+                <!-- Tampilkan link admin hanya jika pengguna adalah admin -->
                 <% if (role === "admin") { %>
                   <li class="nav-item">
                     <a class="nav-link <%= currentPath === '/admin' ? 'active' : '' %>" href="/admin">Admin</a>
                   </li>
                 <% } %>
-
               </li>
               <li class="nav-item">
                 <form action="/logout" method="POST" class="d-inline">
