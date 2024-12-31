@@ -58,9 +58,9 @@ router.get("/films", (req, res) => {
 
 // Route untuk Get All Film By ID
 router.get("/films/:id", (req, res) => {
-  const { id_film } = req.params;
+  const { id } = req.params;
 
-  db.query("SELECT * FROM films WHERE id_film = ?", [id_film], (err, results) => {
+  db.query("SELECT * FROM films WHERE id_film = ?", [id], (err, results) => {
     if (err) {
       console.error("Database Error (Fetching Film):", err.message);
       return res.status(500).json({ error: "Error fetching film" });
@@ -75,23 +75,20 @@ router.get("/films/:id", (req, res) => {
 // Route untuk Add Film
 router.post("/add/films", upload.single("picture"), (req, res) => {
   const { title, genre, duration, description } = req.body;
-  const picture = req.file ? `public/images/${req.file.filename}` : null;
+  const picture = req.file ? req.file.filename : null;
 
-  if (!title || !genre || !duration || !description || !picture) {
+  if (!title || !genre || !duration || !description) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
-  db.query(
-    "INSERT INTO films (title, genre, duration, description, picture) VALUES (?, ?, ?, ?, ?)",
-    [title, genre, duration, description, picture],
-    (err) => {
-      if (err) {
-        console.error("Database Error (Adding Film):", err.message);
-        return res.status(500).json({ error: "Error adding film" });
-      }
-      res.status(201).json({ message: "Film added successfully" });
+  const sql = 'INSERT INTO films (title, genre, duration, description, picture) VALUES (?, ?, ?, ?, ?)';
+  db.query(sql, [title, genre, duration, description, picture], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Failed to add film.');
     }
-  );
+    res.send('Film added successfully!');
+  });
 });
 
 // Route untuk Update Film
@@ -469,6 +466,8 @@ router.post("/order", (req, res) => {
 
 // Route untuk halaman Ticket
 router.get("/ticket", isAuthenticated, (req, res) => {
+  
+
   
 
   res.render("ticket", {
