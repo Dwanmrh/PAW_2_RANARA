@@ -469,13 +469,10 @@ router.post("/order", (req, res) => {
 
 // Route untuk halaman Ticket
 router.get("/ticket", isAuthenticated, (req, res) => {
-  if (!req.session.order) {
-    return res.redirect("/order"); // Jika tidak ada pesanan, arahkan ke halaman order
-  }
+  
 
   res.render("ticket", {
     layout: "layouts/main-layout",
-    order: req.session.order, // Kirimkan data pesanan ke halaman ticket
     user: req.session.username || null, // Kirimkan username jika user login
   });
 });
