@@ -5,13 +5,13 @@
     <div class="col-md-4 mb-4">
       <div class="card-container" onclick="showSynopsis('<%= film.id_film %>')">
         <img
-          src="<%= film.image_url || '/default-image.jpg' %>"
+          src="/images/<%= film.image_url || 'default-image.jpg' %>"
           class="card-img-top"
           alt="<%= film.title %>"
         />
         <div class="card-body">
           <h5 class="card-title text-primary"><%= film.title %></h5>
-          <h6 class="card-title text-primary111"><%= film.duration %></h6>
+          <h6 class="card-title text-primary"><%= film.duration %></h6>
         </div>
         <div class="card-footer text-center">
           <a class="btn btn-primary" href="/order">Order</a>
@@ -21,6 +21,7 @@
     <% }); %>
   </div>
 </div>
+
 
 <!-- Bootstrap Modal -->
 <div

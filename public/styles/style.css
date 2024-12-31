@@ -134,7 +134,7 @@ footer {
   position: relative; /* Mengikuti alur halaman */
   transform: translateY(100%); /* Geser footer ke luar layar */
   transition: transform 0.3s ease-in-out; /* Efek transisi saat muncul */
-  background-color: #174475;
+  background-color: #202e38;
   color: white;
   padding: 20px;
   text-align: center;
@@ -264,4 +264,159 @@ p {
   width: 100%; /* Tombol mengikuti lebar form */
   max-width: 350px; /* Lebar maksimal tombol */
   margin-top: auto; /* Jarak antara tombol dan input sebelumnya */
+}
+
+.btn-admin {
+  float: right; /* Mengatur posisi tombol di sebelah kiri */
+  width: auto; /* Mengatur lebar otomatis sesuai konten */
+  padding: 8px; /* Menyesuaikan padding untuk tombol kecil */
+  font-size: 14px; /* Ukuran font kecil */
+  margin-bottom: 15px; /* Menambahkan jarak dengan tabel */
+  color: #ffffff;
+  font-weight: bold;
+  background-color: #0F7BCA;
+}
+
+.btn-admin:hover {
+  background-color: #083352;
+  color: #ffffff;
+}
+
+.table {
+  font-family: 'Poppins', sans-serif; /* Gunakan nama lengkap font */
+  font-size: 14px; /* Sesuaikan ukuran font jika diperlukan */
+  border-radius: 8px; /* Membuat sudut tumpul dengan radius 8px */
+  overflow: hidden; /* Menghindari konten keluar dari sudut tumpul */
+}
+
+.table th{
+  font-weight: bold;
+  font-size: 18px;
+  padding: 10px;
+}
+
+.table td{
+  padding: 10px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between; /* Membuat button sejajar kanan dan kiri */
+  gap: 10px; /* Memberikan jarak antar button */
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.editBtn {
+  background-color: #ffc107; /* Warna kuning */
+  color: #000;
+  border-radius: 8px;
+}
+
+.deleteBtn {
+  background-color: #dc3545; /* Warna merah */
+  color: #fff;
+  border-radius: 8px;
+}
+
+.text-center{
+  color: white;
+  font-weight: bold;
+}
+
+/* Modal background */
+.modal-content {
+  background-color: #fdeee4; /* Warna latar belakang modal */
+  border-radius: 10px; /* Membuat sudut modal melengkung */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Memberikan efek bayangan */
+}
+
+/* Header modal */
+.modal-header {
+  background-color: #213555; /* Warna biru gelap */
+  color: white; /* Teks berwarna putih */
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  text-transform: uppercase; /* Mengubah teks menjadi uppercase */
+}
+
+/* Title modal */
+.modal-title {
+  color: white;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  text-transform: uppercase;
+}
+
+/* Input dan textarea */
+.form-control {
+  background-color: #e1e1e1; /* Warna abu-abu muda */
+  border: none; /* Hilangkan border */
+  border-radius: 5px; /* Membuat sudut melengkung */
+  padding: 10px; /* Memberikan jarak di dalam input */
+}
+
+/* Label */
+.form-label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Tombol Simpan */
+.btn-actionAdm {
+  background-color: #3C6D96; /* Warna biru gelap */
+  color: white; /* Teks putih */
+  border: none; /* Hilangkan border */
+  border-radius: 20px; /* Membuat tombol oval */
+  padding: 5px 10px; /* Ukuran tombol */
+  width: 100%; /* Tombol memenuhi lebar container */
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn-actionAdm:hover {
+  background-color: #17324a; /* Warna lebih gelap saat hover */
+}
+
+/* Modal body spacing */
+.modal-body {
+  padding: 20px; /* Memberikan jarak di dalam modal */
+}
+
+/* Button close */
+.btn-close {
+  color: rgb(255, 255, 255);
+  opacity: 1; /* Pastikan ikon close terlihat */
+}
+
+.btn-close:hover {
+  color: #ffffff; /* Warna lebih terang saat hover */
+}
+
+.modal-content {
+  border-radius: 10px;
+}
+
+
+button.btn {
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+}
+
+button.btn-delete {
+  background-color: #FF3D3D;
+  border-radius: 5px;
+  padding: 5px 15px;
+}
+
+button.btn-close {
+  filter: invert(1); /* Membuat tombol close terlihat putih */
 }
