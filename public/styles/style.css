@@ -142,7 +142,7 @@ footer a:hover {
 /* Background untuk halaman login */
 /* Styling for the container */
 
-.container {
+.container-login {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -150,7 +150,7 @@ footer a:hover {
 }
 
 /* Card styling */
-.card {
+.card-login {
   display: flex;
   flex-direction: row;
   width: 80%;
@@ -209,7 +209,7 @@ p {
 }
 
 /* Mengubah warna tombol login */
-.btn {
+.btn-login {
   background-color: #213555; /* Ganti dengan warna yang diinginkan */
   color: white; /* Warna teks pada tombol */
   border: none; /* Menghilangkan border */
