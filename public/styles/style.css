@@ -11,6 +11,17 @@ body {
 h1,
 h5 {
   color: #2c3e50;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+p{
+  padding-bottom: 0;
+}
+h6{
+  font-size: 12px;
+  padding-top: 0;
+  padding-bottom: 10px;
 }
 
 .navbar {
@@ -22,8 +33,9 @@ h5 {
   background-color: #758694; /* Warna gelap navbar */
 }
 
-.navbar-brand {
-  font-weight: bold;
+.navbar-logo{
+  width: 10%;
+  padding-left: 10px;
 }
 
 .navbar-nav .nav-link {
@@ -56,8 +68,19 @@ h5 {
 
 /* Modal */
 .modal-header {
-  background-color: #174475;
+  background-color: #405D72;
   color: white;
+}
+
+.btn-secondary {
+  background-color: #3498db;
+  border: none;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.btn-secondary:hover {
+  background-color: #2980b9;
 }
 
 .modal-footer {

@@ -2,8 +2,8 @@
 
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark shadow">
-  <div class="container fluid">
-    <a class="navbar-brand" href="#">RANARA CINEMA</a>
+  <div class="container-fluid">
+    <img class="navbar-logo" src="/images/rc-logo.png" />
     <button
       class="navbar-toggler"
       type="button"
@@ -66,7 +66,7 @@
   <div class="row">
     <% films.forEach((film) => { %>
     <div class="col-md-4 mb-4">
-      <div class="card-container">
+      <div class="card-container" onclick="showSynopsis('<%= film.id_film %>')">
         <img
           src="<%= film.image_url || '/default-image.jpg' %>"
           class="card-img-top"
@@ -74,15 +74,7 @@
         />
         <div class="card-body">
           <h5 class="card-title text-primary"><%= film.title %></h5>
-          <p class="card-text text-truncate" style="max-height: 3.6em">
-            <%= film.description %>
-          </p>
-          <button
-            class="btn btn-link p-0 text-primary"
-            onclick="showSynopsis('<%= film.id_film %>')"
-          >
-            Lihat Sinopsis
-          </button>
+          <h6 class="card-title text-primary111"><%= film.duration %></h6>
         </div>
         <div class="card-footer text-center">
           <a class="btn btn-primary" href="/login">Order</a>
@@ -113,10 +105,8 @@
         ></button>
       </div>
       <div class="modal-body" id="synopsisContent"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Tutup
-        </button>
+      <div class="modal-footer text-center">
+        <a class="btn btn-secondary" href="/login">Order</a>
       </div>
     </div>
   </div>
