@@ -1,6 +1,6 @@
 /* General styling */
 body {
-  background-color: #f8f9fa;
+  background-color: #405D72;
   font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
@@ -19,7 +19,7 @@ h5 {
 
 /* Navbar styles */
 .navbar-dark {
-  background-color: #212529; /* Warna gelap navbar */
+  background-color: #758694; /* Warna gelap navbar */
 }
 
 .navbar-brand {
@@ -36,14 +36,16 @@ h5 {
 }
 
 /* Card styles */
-.movie-card {
+.card-container {
   transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
   border-radius: 8px;
   overflow: hidden;
+  background-color: white;
+  padding: 20px;
 }
 
-.movie-card:hover {
+.card-container:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -77,6 +79,7 @@ h5 {
   background-color: #3498db;
   border: none;
   transition: background-color 0.3s ease;
+  width: 100%;
 }
 
 .btn-primary:hover {

@@ -1,5 +1,7 @@
+<link rel="stylesheet" href="/styles/style.css">
+
 <!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+<nav class="navbar navbar-expand-lg navbar-dark shadow">
   <div class="container fluid">
     <a class="navbar-brand" href="#">RANARA CINEMA</a>
     <button
@@ -26,13 +28,45 @@
   </div>
 </nav>
 
+<!--Carousel section-->
+<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="/images/carousel1.jpg" class="d-block w-100" alt="cr1">
+    </div>
+    <div class="carousel-item">
+      <img src="/images/carousel2.jpg" class="d-block w-100" alt="cr2">
+    </div>
+    <div class="carousel-item">
+      <img src="/images/carousel3.jpg" class="d-block w-100" alt="cr3">
+    </div>
+    <div class="carousel-item">
+      <img src="/images/carousel4.jpg" class="d-block w-100" alt="cr4">
+    </div>
+    <div class="carousel-item">
+      <img src="/images/carousel5.jpg" class="d-block w-100" alt="cr5">
+    </div>
+    <div class="carousel-item">
+      <img src="/images/carousel6.jpg" class="d-block w-100" alt="cr6">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
 <!-- Main Content -->
 <div class="container mt-5">
-  <h1 class="text-center mb-4 text-dark">DAFTAR FILM</h1>
+  <h1 class="text-center mb-4 text-dark">Sedang Tayang</h1>
   <div class="row">
     <% films.forEach((film) => { %>
     <div class="col-md-4 mb-4">
-      <div class="card h-100 shadow movie-card">
+      <div class="card-container">
         <img
           src="<%= film.image_url || '/default-image.jpg' %>"
           class="card-img-top"

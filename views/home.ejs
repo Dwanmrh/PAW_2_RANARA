@@ -3,7 +3,7 @@
   <div class="row">
     <% films.forEach((film) => { %>
     <div class="col-md-4 mb-4">
-      <div class="card h-100 shadow movie-card">
+      <div class="card-container">
         <img
           src="<%= film.image_url || '/default-image.jpg' %>"
           class="card-img-top"
