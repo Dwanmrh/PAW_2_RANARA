@@ -195,6 +195,11 @@ footer a:hover {
   object-fit: cover;
 }
 
+.card-login:hover {
+  transform: scale(1.05); /* Membuat card sedikit membesar */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Bayangan lebih besar saat hover */
+}
+
 /* Right side card (form) */
 .card-right {
   flex: 1;
