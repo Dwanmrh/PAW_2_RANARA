@@ -146,14 +146,14 @@ h6{
 }
 
 .btn-secondary {
-  background-color: #3498db;
+  background-color: #213555;
   border: none;
   transition: background-color 0.3s ease;
   width: 100%;
 }
 
 .btn-secondary:hover {
-  background-color: #2980b9;
+  background-color: #213555;
 }
 
 .modal-footer {
