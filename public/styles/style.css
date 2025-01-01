@@ -420,3 +420,73 @@ button.btn-delete {
 button.btn-close {
   filter: invert(1); /* Membuat tombol close terlihat putih */
 }
+
+/*signup*/
+/* Card styling */
+.card-signup {
+  display: flex;
+  flex-direction: row;
+  width: 50%; /* Lebar card */
+  max-width: 1000px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bayangan awal */
+  border-radius: 25px;
+  background-color: #AEC0CD;
+  margin: auto; /* Memindahkan card ke tengah */
+  margin-top: 150px; /* Memberi jarak di bagian atas */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transisi halus */
+}
+
+.card-signup:hover {
+  transform: scale(1.05); /* Membuat card sedikit membesar */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Bayangan lebih besar saat hover */
+}
+/* Left side card (image) */
+.card-left {
+  flex: 1;
+  overflow: hidden;
+  border-radius: 10px 0 0 10px; /* Membuat sudut kiri atas dan bawah melengkung */
+}
+
+/* Right side card (form) */
+.card-right {
+  flex: 1;
+  padding: 2rem;
+}
+
+.card-right h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-family: 'Poltawski Nowy';
+  color: black;
+}
+
+.card-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Memastikan gambar menutupi area tanpa terdistorsi */
+}
+
+/* Mengubah warna tombol login */
+.btn-signup {
+  background-color: #213555; /* Ganti dengan warna yang diinginkan */
+  color: white; /* Warna teks pada tombol */
+  border: none; /* Menghilangkan border */
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  border-radius: 10px; /* Menambahkan sudut melengkung pada tombol */
+  padding: 8px; /* Memberikan sedikit padding agar tombol tidak terlalu kecil */
+  width: 100%; 
+}
+
+.btn-signup:hover {
+  background-color: #174475; /* Warna saat tombol di-hover */
+}
+
+.text-right-signup {
+  text-align: right; /* Mengatur teks agar rata kanan */
+  margin-top: 20px;   /* Menambahkan jarak atas jika diperlukan */
+  color: white;
+  font-family: 'Poppins', sans-serif;;
+  font-weight: lighter;
+  font-size: small;
+}
