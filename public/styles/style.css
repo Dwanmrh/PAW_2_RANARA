@@ -6,7 +6,22 @@ body {
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
+  overflow-y: scroll;
 }
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-heading {
+  font-family: 'Poppins', sans-serif;; /* Ganti dengan font yang diinginkan */
+  font-size: 2.5rem; /* Atur ukuran font */
+  font-weight: 700; /* Atur ketebalan font */
+  color: black; /* Ubah warna jika diperlukan */
+  text-transform: uppercase; /* Opsional: ubah teks menjadi huruf kapital */
+  letter-spacing: 1px; /* Opsional: tambahkan spasi antar huruf */
+}
+
 
 h1,
 h5 {
@@ -14,6 +29,7 @@ h5 {
   text-align: center;
   padding-top: 10px;
   padding-bottom: 5px;
+  font-family: 'Poppins', sans-serif;;
 }
 p{
   padding-bottom: 0;
@@ -26,6 +42,10 @@ h6{
 
 .navbar {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 20px; /* Membuat sudut melengkung */
+  padding: 10px 20px; /* Spasi dalam navbar */
+  margin: 20px auto; /* Spasi di sekitar navbar */
+  max-width: 95%; /* Batasi lebar navbar */
 }
 
 /* Navbar styles */
@@ -41,10 +61,63 @@ h6{
 .navbar-nav .nav-link {
   color: #ffffff;
   transition: color 0.3s ease;
+  font-family: 'Poppins', sans-serif;;
 }
 
 .navbar-nav .nav-link:hover {
   color: #f1c40f;
+}
+
+/*Carousel*/
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
+}
+.carousel-control-prev:hover, 
+.carousel-control-next:hover {
+  transform: scale(1.2);
+  transition: transform 0.2s ease-in-out;
+}
+/* Custom Button Styles */
+.custom-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.custom-btn:hover {
+  transform: scale(1.2);
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
+  width: 20px;
+  height: 20px;
+}
+
+/* Mengatur ukuran gambar di dalam carousel */
+.carousel-inner img {
+  height: 100%;
+  border-radius: 0; /* Reset radius gambar jika perlu */
+  object-fit: cover; /* Memastikan gambar tetap proporsional */
+}
+
+#carouselExampleAutoplaying {
+  border-radius: 20px; /* Atur radius sesuai kebutuhan */
+  overflow: hidden; /* Pastikan konten tetap dalam area melengkung */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Opsional: Tambahkan efek bayangan */
+  width: 90%; /* Lebar lebih besar untuk memanjang */
+  max-width: 3000px; /* Maksimal lebar lebih besar */
+  height: 525px; /* Tinggi lebih rendah untuk efek memanjang */
+  margin: 0 auto; /* Agar carousel tetap berada di tengah */
 }
 
 /* Card styles */
@@ -53,7 +126,7 @@ h6{
   cursor: pointer;
   border-radius: 8px;
   overflow: hidden;
-  background-color: white;
+  background-color: #D9D9D9;
   padding: 20px;
 }
 
@@ -63,7 +136,7 @@ h6{
 }
 
 .card-img-top {
-  border-bottom: 3px solid #3498db;
+  border-bottom: 3px solid #05426b;
 }
 
 /* Modal */
@@ -99,10 +172,11 @@ h6{
 
 /* Buttons */
 .btn-primary {
-  background-color: #3498db;
+  background-color: #213555;
   border: none;
   transition: background-color 0.3s ease;
   width: 100%;
+  font-family: 'Poppins', sans-serif;;;
 }
 
 .btn-primary:hover {
