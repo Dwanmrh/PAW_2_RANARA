@@ -169,19 +169,22 @@ footer a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 /* Card styling */
 .card-login {
   display: flex;
   flex-direction: row;
-  width: 80%;
+  width: 50%; /* Lebar card */
   max-width: 1000px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  background-color:  #AEC0CD;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bayangan awal */
+  border-radius: 25px;
+  background-color: #AEC0CD;
+  margin: auto; /* Memindahkan card ke tengah */
+  margin-top: 150px; /* Memberi jarak di bagian atas */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transisi halus */
 }
+
 
 /* Left side card (image) */
 .card-left {
