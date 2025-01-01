@@ -141,7 +141,12 @@
     fetch(`/films/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        document.getElementById("synopsisContent").innerText = data.description;
+        // Isi modal dengan data dari API
+        document.getElementById("synopsisContent").innerText =
+          data.description || "Sinopsis tidak tersedia.";
+        document.getElementById("synopsisImage").src = data.picture
+          ? `/images/${data.picture}`
+          : "/default-image.jpg";
         new bootstrap.Modal(document.getElementById("synopsisModal")).show();
       })
       .catch((error) => console.error("Error fetching synopsis:", error));
