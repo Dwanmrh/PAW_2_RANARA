@@ -5,17 +5,17 @@ const path = require("path");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "images/"); // Direktori penyimpanan gambar
+    cb(null, path.join(__dirname, "public/images")); // Folder penyimpanan
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Nama file unik
+    cb(null, file.originalname); // Gunakan nama asli file
   },
 });
 
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|gif/;
+    const filetypes = /jpeg|jpg|png/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = filetypes.test(file.mimetype);
 

@@ -75,51 +75,98 @@ router.get("/films/:id", (req, res) => {
 // Route untuk Add Film
 router.post("/add/films", upload.single("picture"), (req, res) => {
   const { title, genre, duration, description } = req.body;
-  const picture = req.file ? req.file.filename : null;
+  const picture = req.file.originalname;
 
-  if (!title || !genre || !duration || !description) {
-    return res.status(400).json({ error: "All fields are required" });
+  if (!title || !genre || !duration || !description || !picture) {
+    return res
+      .status(400)
+      .json({ error: "All fields and an image are required" });
   }
 
-  const sql = 'INSERT INTO films (title, genre, duration, description, picture) VALUES (?, ?, ?, ?, ?)';
-  db.query(sql, [title, genre, duration, description, picture], (err, result) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send('Failed to add film.');
+  const sql =
+    "INSERT INTO films (title, genre, duration, description, picture) VALUES (?, ?, ?, ?, ?)";
+  db.query(
+    sql,
+    [title, genre, duration, description, picture],
+    (err, result) => {
+      if (err) {
+        console.error("Database Error (Adding Film):", err.message);
+        return res.status(500).json({ error: "Error adding film" });
+      }
+      res
+        .status(201)
+        .json({ message: "Film added successfully!", id: result.insertId });
     }
-    res.send('Film added successfully!');
-  });
+  );
 });
 
 // Route untuk Update Film
 router.put("/update/films/:id", upload.single("picture"), (req, res) => {
   const { id } = req.params;
   const { title, genre, duration, description } = req.body;
-  const picture = req.file ? `public/images/${req.file.filename}` : null;
+  const newPicture = req.file ? req.file.originalname : null;
 
-  db.query(
-    "UPDATE films SET title = ?, genre = ?, duration = ?, description = ?, picture = ? WHERE id_film = ?",
-    [title, genre, duration, description, picture, id],
-    (err) => {
-      if (err) {
-        console.error("Database Error (Updating Film):", err.message);
-        return res.status(500).json({ error: "Error updating film" });
+  // Ambil data lama
+  const querySelect = "SELECT picture FROM films WHERE id_film = ?";
+  db.query(querySelect, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.length === 0)
+      return res.status(404).json({ message: "Film tidak ditemukan" });
+
+    const oldPicture = results[0].picture;
+
+    // Update data di database
+    const queryUpdate =
+      "UPDATE films SET title = ?, genre = ?, duration = ?, description = ?, picture = ? WHERE id_film = ?";
+    db.query(
+      queryUpdate,
+      [title, genre, duration, description, newPicture || oldPicture, id],
+      (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        // Hapus file lama jika ada file baru
+        if (newPicture) {
+          const filePath = path.join(__dirname, "public/images", oldImage);
+          fs.unlink(filePath, (err) => {
+            if (err) console.error("Gagal menghapus file lama:", err.message);
+          });
+        }
+
+        res
+          .status(200)
+          .json({ message: "Film berhasil diperbarui", data: result });
       }
-      res.status(200).json({ message: "Film updated successfully" });
-    }
-  );
+    );
+  });
 });
 
 // Route untuk Delete Film
 router.delete("/delete/films/:id", (req, res) => {
   const { id } = req.params;
 
-  db.query("DELETE FROM films WHERE id_film = ?", [id], (err) => {
-    if (err) {
-      console.error("Database Error (Deleting Film):", err.message);
-      return res.status(500).json({ error: "Error deleting film" });
-    }
-    res.status(200).json({ message: "Film deleted successfully" });
+  // Ambil nama file dari database
+  const querySelect = "SELECT picture FROM films WHERE id_film = ?";
+  db.query(querySelect, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.length === 0)
+      return res.status(404).json({ message: "Film tidak ditemukan" });
+
+    const pictureName = results[0].picture;
+
+    // Hapus file dari folder
+    const filePath = path.join(__dirname, "public/images", pictureName);
+    fs.unlink(filePath, (err) => {
+      if (err) return res.status(500).json({ error: err.message });
+
+      // Hapus data dari database
+      const queryDelete = "DELETE FROM films WHERE id_film = ?";
+      db.query(queryDelete, [id], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res
+          .status(200)
+          .json({ message: "Film berhasil dihapus", data: result });
+      });
+    });
   });
 });
 // <<-- AKHIR CRUD FILM -->> //
@@ -129,36 +176,46 @@ router.delete("/delete/films/:id", (req, res) => {
 router.get("/kursi/:id_film", (req, res) => {
   const { id_film } = req.params;
 
-  db.query("SELECT * FROM kursi WHERE id_film = ?", [id_film], (err, results) => {
-    if (err) {
-      console.error("Database Error (Fetching Seats):", err.message);
-      return res.status(500).json({ error: "Error fetching seats" });
+  db.query(
+    "SELECT * FROM kursi WHERE id_film = ?",
+    [id_film],
+    (err, results) => {
+      if (err) {
+        console.error("Database Error (Fetching Seats):", err.message);
+        return res.status(500).json({ error: "Error fetching seats" });
+      }
+      res.json(results);
     }
-    res.json(results);
-  });
+  );
 });
 
 // Route untuk Get Kursi By ID
 router.get("/kursi/:id", (req, res) => {
   const { id_kursi } = req.params;
-  db.query("SELECT * FROM kursi WHERE id_kursi = ?", [id_kursi], (err, results) => {
-    if (err) {
-      console.error("Database Error (Fetching Seat):", err.message);
-      return res.status(500).json({ error: "Error fetching seat" });
+  db.query(
+    "SELECT * FROM kursi WHERE id_kursi = ?",
+    [id_kursi],
+    (err, results) => {
+      if (err) {
+        console.error("Database Error (Fetching Seat):", err.message);
+        return res.status(500).json({ error: "Error fetching seat" });
+      }
+      if (results.length === 0) {
+        return res.status(404).json({ error: "Seat not found" });
+      }
+      res.json(results[0]);
     }
-    if (results.length === 0) {
-      return res.status(404).json({ error: "Seat not found" });
-    }
-    res.json(results[0]);
-  });
+  );
 });
 
 // Route untuk Add Kursi
 router.post("/add/kursi", (req, res) => {
-  const { id_tiket, no_kursi, status = "Dipesan", id_film} = req.body;
+  const { id_tiket, no_kursi, status = "Dipesan", id_film } = req.body;
 
   if (!no_kursi || !id_film) {
-    return res.status(400).json({ error: "Nomor kursi and ID Film are required" });
+    return res
+      .status(400)
+      .json({ error: "Nomor kursi and ID Film are required" });
   }
 
   db.query(
@@ -169,7 +226,9 @@ router.post("/add/kursi", (req, res) => {
         console.error("Database Error (Adding Seat):", err.message);
         return res.status(500).json({ error: "Error adding seat" });
       }
-      res.status(201).json({ message: "Seat added successfully", id: results.insertId });
+      res
+        .status(201)
+        .json({ message: "Seat added successfully", id: results.insertId });
     }
   );
 });
@@ -199,16 +258,20 @@ router.put("/update/kursi/:id", (req, res) => {
 router.delete("/delete/kursi/:id", (req, res) => {
   const { id_kursi } = req.params;
 
-  db.query("DELETE FROM kursi WHERE id_kursi = ?", [id_kursi], (err, results) => {
-    if (err) {
-      console.error("Database Error (Deleting Seat):", err.message);
-      return res.status(500).json({ error: "Error deleting seat" });
+  db.query(
+    "DELETE FROM kursi WHERE id_kursi = ?",
+    [id_kursi],
+    (err, results) => {
+      if (err) {
+        console.error("Database Error (Deleting Seat):", err.message);
+        return res.status(500).json({ error: "Error deleting seat" });
+      }
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ error: "Seat not found" });
+      }
+      res.json({ message: "Seat deleted successfully" });
     }
-    if (results.affectedRows === 0) {
-      return res.status(404).json({ error: "Seat not found" });
-    }
-    res.json({ message: "Seat deleted successfully" });
-  });
+  );
 });
 // <<-- AKHIR CRUD KURSI -->> //
 
@@ -217,28 +280,36 @@ router.delete("/delete/kursi/:id", (req, res) => {
 router.get("/jadwal/:id_film", (req, res) => {
   const { id_film } = req.params;
 
-  db.query("SELECT * FROM jadwal WHERE id_film = ?", [id_film], (err, results) => {
-    if (err) {
-      console.error("Database Error (Fetching Schedule):", err.message);
-      return res.status(500).json({ error: "Error fetching schedule" });
+  db.query(
+    "SELECT * FROM jadwal WHERE id_film = ?",
+    [id_film],
+    (err, results) => {
+      if (err) {
+        console.error("Database Error (Fetching Schedule):", err.message);
+        return res.status(500).json({ error: "Error fetching schedule" });
+      }
+      res.status(200).json(results);
     }
-    res.status(200).json(results);
-  });
+  );
 });
 
 // Route untuk Get Jadwal By ID
 router.get("/jadwal/:id", (req, res) => {
   const { id_jadwal } = req.params;
-  db.query("SELECT * FROM jadwal WHERE id_jadwal = ?", [id_jadwal], (err, results) => {
-    if (err) {
-      console.error("Database Error (Fetching Seat):", err.message);
-      return res.status(500).json({ error: "Error fetching schedule" });
+  db.query(
+    "SELECT * FROM jadwal WHERE id_jadwal = ?",
+    [id_jadwal],
+    (err, results) => {
+      if (err) {
+        console.error("Database Error (Fetching Seat):", err.message);
+        return res.status(500).json({ error: "Error fetching schedule" });
+      }
+      if (results.length === 0) {
+        return res.status(404).json({ error: "Schedule not found" });
+      }
+      res.json(results[0]);
     }
-    if (results.length === 0) {
-      return res.status(404).json({ error: "Schedule not found" });
-    }
-    res.json(results[0]);
-  });
+  );
 });
 
 // Route untuk Add Jadwal
@@ -247,7 +318,9 @@ router.post("/add/jadwal", (req, res) => {
 
   // Validasi input
   if (!date || !time || !id_film) {
-    return res.status(400).json({ error: "Date, Time, and ID Film are required" });
+    return res
+      .status(400)
+      .json({ error: "Date, Time, and ID Film are required" });
   }
 
   // Format validasi tanggal
@@ -255,7 +328,9 @@ router.post("/add/jadwal", (req, res) => {
   const timeRegex = /^\d{2}:\d{2}:\d{2}$/; // Format HH:MM:SS
 
   if (!dateRegex.test(date)) {
-    return res.status(400).json({ error: "Invalid date format. Use YYYY-MM-DD" });
+    return res
+      .status(400)
+      .json({ error: "Invalid date format. Use YYYY-MM-DD" });
   }
 
   if (!timeRegex.test(time)) {
@@ -270,7 +345,9 @@ router.post("/add/jadwal", (req, res) => {
         console.error("Database Error (Adding Schedule):", err.message);
         return res.status(500).json({ error: "Error adding schedule" });
       }
-      res.status(201).json({ message: "Schedule added successfully", id: results.insertId });
+      res
+        .status(201)
+        .json({ message: "Schedule added successfully", id: results.insertId });
     }
   );
 });
@@ -300,16 +377,20 @@ router.put("/update/jadwal/:id", (req, res) => {
 router.delete("/delete/jadwal/:id", (req, res) => {
   const { id_jadwal } = req.params;
 
-  db.query("DELETE FROM jadwal WHERE id_jadwal = ?", [id_jadwal], (err, results) => {
-    if (err) {
-      console.error("Database Error (Deleting Schedule):", err.message);
-      return res.status(500).json({ error: "Error deleting schedule" });
+  db.query(
+    "DELETE FROM jadwal WHERE id_jadwal = ?",
+    [id_jadwal],
+    (err, results) => {
+      if (err) {
+        console.error("Database Error (Deleting Schedule):", err.message);
+        return res.status(500).json({ error: "Error deleting schedule" });
+      }
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ error: "Schedule not found" });
+      }
+      res.json({ message: "Schedule deleted successfully" });
     }
-    if (results.affectedRows === 0) {
-      return res.status(404).json({ error: "Schedule not found" });
-    }
-    res.json({ message: "Schedule deleted successfully" });
-  });
+  );
 });
 // <<-- AKHIR CRUD JADWAL -->> //
 
@@ -334,7 +415,6 @@ router.post("/signup", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-
 
 // Route untuk menampilkan form signup
 router.get("/signup", (req, res) => {
@@ -369,15 +449,14 @@ router.post("/login", (req, res) => {
 
       req.session.userId = user.id;
       req.session.username = user.username;
-      req.session.role = user.role;  // Pastikan role diset di sini
+      req.session.role = user.role; // Pastikan role diset di sini
       console.log("User Role:", user.role); // Debugging untuk memverifikasi nilai role
-
 
       // Pastikan pengecekan role benar
       if (user.role === "admin") {
-        return res.redirect("/admin");  // Arahkan ke halaman admin jika admin
+        return res.redirect("/admin"); // Arahkan ke halaman admin jika admin
       } else {
-        return res.redirect("/home");  // Arahkan ke halaman home jika bukan admin
+        return res.redirect("/home"); // Arahkan ke halaman home jika bukan admin
       }
     }
   );
@@ -457,7 +536,7 @@ router.post("/order", (req, res) => {
         title,
         date,
         time,
-        no_kursi
+        no_kursi,
       };
       res.redirect("/ticket");
     }
@@ -466,10 +545,6 @@ router.post("/order", (req, res) => {
 
 // Route untuk halaman Ticket
 router.get("/ticket", isAuthenticated, (req, res) => {
-  
-
-  
-
   res.render("ticket", {
     layout: "layouts/main-layout",
     user: req.session.username || null, // Kirimkan username jika user login

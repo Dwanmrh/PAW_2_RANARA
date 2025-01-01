@@ -27,8 +27,12 @@ app.use(
   })
 );
 
-// Middleware tambahan
+// Middleware untuk layout EJS
 app.use(expressLayout);
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// Middleware untuk set folder statis
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
@@ -39,26 +43,25 @@ app.use((req, res, next) => {
 });
 
 // Pengaturan view engine
-app.set("view engine", "ejs");
 app.set("layout", "layouts/main-layout");
 
 // Tambahkan routes
-app.use("/", authRoutes); // Rute autentikasi (login, logout, dll.)
+app.use("/", authRoutes); // Middleware untuk routes
 app.use("/admin", isAuthenticated, adminRoutes); // Rute admin dengan middleware autentikasi
 app.use("/user", isAuthenticated, userRoutes); // Rute user dengan middleware autentikasi
 
 // Konfigurasi Multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Folder tempat menyimpan file
+    cb(null, "public/images"); // Folder tempat menyimpan file
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Rename file
+    cb(null, file.originalname); // Rename file
   },
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+  const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
