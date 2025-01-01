@@ -7,19 +7,18 @@ const router = express.Router();
 const path = require("path");
 const fs = require("fs");
 
-// Konfigurasi penyimpanan Multer
+// Konfigurasi Multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/images/"); // Folder tempat menyimpan file
+    cb(null, "public/images"); // Folder tempat menyimpan file
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Rename file
+    cb(null, file.originalname); // Rename file
   },
 });
 
-// Filter untuk memastikan hanya file gambar yang diupload
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+  const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
