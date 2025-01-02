@@ -147,25 +147,42 @@ router.delete("/delete/films/:id", (req, res) => {
   // Ambil nama file dari database
   const querySelect = "SELECT picture FROM films WHERE id_film = ?";
   db.query(querySelect, [id], (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    if (results.length === 0)
+    if (err) {
+      console.error("Database Error (Fetching Film):", err.message);
+      return res.status(500).json({ error: "Error fetching film data" });
+    }
+    if (results.length === 0) {
+      console.log("Film not found for ID:", id);
       return res.status(404).json({ message: "Film tidak ditemukan" });
+    }
 
     const pictureName = results[0].picture;
 
-    // Hapus file dari folder
-    const filePath = path.join(__dirname, "public/images", pictureName);
-    fs.unlink(filePath, (err) => {
-      if (err) return res.status(500).json({ error: err.message });
-
-      // Hapus data dari database
-      const queryDelete = "DELETE FROM films WHERE id_film = ?";
-      db.query(queryDelete, [id], (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res
-          .status(200)
-          .json({ message: "Film berhasil dihapus", data: result });
+    // Hapus file dari folder jika ada
+    if (pictureName) {
+      const filePath = path.join(__dirname, "public/images", pictureName);
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error("Error deleting file:", err.message);
+          // Lanjutkan proses penghapusan dari database meskipun file tidak bisa dihapus
+        }
       });
+    }
+
+    // Hapus data dari database
+    const queryDelete = "DELETE FROM films WHERE id_film = ?";
+    db.query(queryDelete, [id], (err, result) => {
+      if (err) {
+        console.error("Database Error (Deleting Film):", err.message);
+        return res.status(500).json({ error: "Error deleting film" });
+      }
+
+      if (result.affectedRows === 0) {
+        console.log("No rows affected during delete for ID:", id);
+        return res.status(404).json({ message: "Film tidak ditemukan" });
+      }
+
+      res.status(200).json({ message: "Film berhasil dihapus", data: result });
     });
   });
 });
