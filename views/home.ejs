@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <h1 class="text-center mb-4 text-dark">DAFTAR FILM</h1>
+  <h1 class="text-center mb-4 text-dark custom-heading">DAFTAR FILM</h1>
   <div class="row">
     <% films.forEach((film) => { %>
     <div class="col-md-4 mb-4">
@@ -30,9 +30,9 @@
   aria-labelledby="synopsisModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header bg-primary text-light">
+      <div class="modal-header text-light">
         <h5 class="modal-title" id="synopsisModalLabel">Sinopsis Film</h5>
         <button
           type="button"
@@ -41,7 +41,23 @@
           aria-label="Close"
         ></button>
       </div>
-      <div class="modal-body" id="synopsisContent"></div>
+      <div class="modal-body">
+        <div class="row">
+          <!-- Gambar Film -->
+          <div class="col-md-4">
+            <img
+              id="synopsisImage"
+              src="/default-image.jpg"
+              alt="Poster Film"
+              class="img-fluid rounded"
+            />
+          </div>
+          <!-- Sinopsis -->
+          <div class="col-md-8">
+            <div id="synopsisContent"></div>
+          </div>
+        </div>
+      </div>
       <div class="modal-footer text-center">
         <a class="btn btn-secondary" href="/order">Order</a>
       </div>
