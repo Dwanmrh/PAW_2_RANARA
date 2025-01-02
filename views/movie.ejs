@@ -82,7 +82,12 @@
         />
         <div class="card-body">
           <h5 class="card-title text-primary"><%= film.title %></h5>
-          <h6 class="card-title text-primary111"><%= film.duration %></h6>
+          <h6 class="card-title text-primary111">
+            <strong>Durasi:</strong> <%= film.duration %>
+          </h6>
+          <h6 class="card-title text-primary111">
+            <strong>Genre:</strong> <%= film.genre %>
+          </h6>
         </div>
         <div class="card-footer text-center">
           <a class="btn btn-primary" href="/login">Pesan</a>
