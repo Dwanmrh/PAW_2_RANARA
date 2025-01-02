@@ -148,6 +148,7 @@
         if (!response.ok) {
           throw new Error(`Failed to fetch film: ${response.status}`);
         }
+
         return response.json();
       })
       .then((data) => {
@@ -157,6 +158,8 @@
         document.getElementById("synopsisImage").src = data.picture
           ? `/images/${data.picture}`
           : "/default-image.jpg";
+        document.getElementById("synopsisModalLabel").innerText =
+          data.title || "Judul tidak tersedia"; // Title diambil dari database
 
         // Tampilkan modal
         const modal = new bootstrap.Modal(
