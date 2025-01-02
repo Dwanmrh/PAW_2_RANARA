@@ -56,7 +56,7 @@ const storage = multer.diskStorage({
     cb(null, "public/images"); // Folder tempat menyimpan file
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Menambahkan timestamp untuk menghindari duplikasi nama file
+    cb(null, file.originalname); // Menambahkan timestamp untuk menghindari duplikasi nama file
   },
 });
 
