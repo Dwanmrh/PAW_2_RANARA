@@ -572,3 +572,385 @@ button.btn-close {
   font-weight: lighter;
   font-size: small;
 }
+
+
+
+
+
+
+
+
+/* Halaman ORDER*/
+.time-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 15px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #15437f, #0ed0f2);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.time-button i {
+  margin-right: 8px;
+  font-size: 1rem;
+}
+
+.time-button:hover {
+  background: linear-gradient(135deg, #061c34, #09efbd);
+  transform: scale(1.05);
+}
+
+.time-button.selected {
+  background: linear-gradient(135deg, #0c541d, #00fd0d);
+}
+
+.seat-button {
+  padding: 10px 15px;
+  border-radius: 5px;
+  background: #E0E7FF;
+  color: #495057;
+  border: 1px solid #ced4da;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 2px;
+  width: 50px; /* Ukuran tetap untuk semua kursi */
+  height: 50px; /* Ukuran tetap untuk semua kursi */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seat-button.selected {
+  background: #0f105a;
+  color: white;
+  border-color: #345369;
+}
+
+.seat-button:hover {
+  background: #b8efc5;
+  color: #1c4225;
+}
+
+.seat-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  margin-bottom: 10px;
+  max-width: 100%;
+}
+
+.screen {
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  background-color: #374151;
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.blur-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom:0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  z-index: 1040;
+  display: none;
+}
+
+.blur-overlay.active {
+  display:none;
+}
+
+.seat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-dialog {
+  max-width: 600px;
+}
+
+/* Styling untuk Modal QR Code */
+.qr-modal-dialog {
+  max-width: 400px;  /* Menetapkan lebar maksimum modal */
+  border-radius: 10px;  /* Memberikan sudut melengkung pada modal */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Bayangan modal yang lebih halus */
+}
+
+.qr-modal-content {
+  border-radius: 10px;  /* Sudut melengkung pada konten modal */
+  background-color: #fff;  /* Background putih untuk konten modal */
+  padding: 20px;  /* Memberikan padding pada konten modal */
+}
+
+.qr-img {
+  max-width: 300px;  /* Menetapkan ukuran gambar QR */
+  margin: 10px auto;  /* Memberikan margin otomatis di kiri dan kanan */
+  display: block;  /* Menampilkan gambar di tengah */
+}
+
+.qr-text {
+  font-size: 16px;  /* Ukuran teks yang lebih besar */
+  color: #333;  /* Warna teks gelap untuk kontras yang lebih baik */
+  font-weight: bold;  /* Membuat teks menjadi tebal */
+  margin-top: 10px;  /* Memberikan jarak antara gambar QR dan teks */
+}
+
+/* Styling untuk Modal Pembayaran Berhasil */
+.success-modal-dialog {
+  max-width: 500px;  /* Menetapkan lebar maksimum modal */
+  border-radius: 12px;  /* Sudut melengkung pada modal */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Bayangan halus untuk modal */
+}
+
+.success-modal-content {
+  border-radius: 12px;  /* Sudut melengkung pada konten modal */
+  background-color: #dee1dc;  /* Background putih untuk konten modal */
+  padding: 30px;  /* Memberikan padding di sekitar konten modal */
+  border: 2px solid #e5e5e5;  /* Memberikan border abu-abu yang lembut */
+}
+
+.success-icon {
+  color: #17ca41;  /* Hijau terang untuk ikon sukses */
+}
+
+.success-title {
+  font-size: 24px;  /* Ukuran teks yang lebih besar untuk judul */
+  color: #333;  /* Warna teks gelap untuk kontras yang lebih baik */
+  font-weight: bold;  /* Membuat judul lebih tebal */
+}
+
+.success-icon-item {
+  color: #333;  /* Warna item ikon hitam */
+}
+
+.seat-summary, .total-summary {
+  font-size: 18px;  /* Ukuran font yang sedikit lebih besar untuk teks kursi dan total */
+  color: #8b4513;  /* Warna coklat untuk teks kursi dan total */
+  font-weight: bold;  /* Membuat teks lebih tebal */
+}
+
+/* Styling untuk Tombol Tutup pada Modal Pembayaran Berhasil */
+.success-close-btn {
+  background-color: #79682a;  /* Warna tombol tutup biru */
+  border: none;  /* Menghilangkan border tombol */
+  color: #fff;  /* Warna teks putih */
+  font-size: 16px;  /* Ukuran font tombol */
+  padding: 10px 20px;  /* Memberikan padding pada tombol */
+  border-radius: 8px;  /* Memberikan sudut melengkung pada tombol */
+  transition: background-color 0.3s ease;  /* Efek transisi pada hover */
+  width: auto;  /* Menyesuaikan lebar tombol dengan panjang teks */
+  min-width: 150px;  /* Menetapkan lebar minimum tombol agar tidak terlalu kecil */
+  text-align: center;  /* Menyelaraskan teks agar berada di tengah */
+}
+
+.success-close-btn:hover {
+  background-color: #aa9409;  /* Warna biru yang lebih gelap saat hover */
+  cursor: pointer;  /* Mengubah cursor menjadi tangan saat hover */
+}
+
+.success-close-btn:focus {
+  outline: none;  /* Menghilangkan outline saat tombol fokus */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Halaman Ticket*/
+
+.ticket-container {
+  max-width: 500px;
+  margin: 30px auto;
+  background-color: #fdeee4;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 2px dashed #993f04;
+  display: none; /* Awalnya tiket tidak muncul */
+}
+
+.ticket-header {
+  background-color: #221c5b;
+  color: rgb(229, 206, 30);
+  text-align: center;
+  padding: 10px 8px;
+}
+
+.ticket-content {
+  padding: 10px;
+}
+
+.ticket-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.ticket-details div {
+  margin-bottom: 10px;
+  width: 38%;
+  font-size: 1.1rem;
+}
+
+.ticket-footer {
+  text-align: center;
+  padding: 10px 8px;
+  background-color: #6b6c78;
+  border-top: 1px dashed #f38d00;
+}
+
+.barcode {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.barcode div {
+  width: 4px;
+  height: 50px;
+  margin: 0 1px;
+  background: #000;
+}
+
+/*Untuk ngeprint*/
+.btn-print {
+  background: linear-gradient(135deg, #11cce8,#0d3236, #15dfdf);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);  
+  max-width: 300px; /* Membatasi lebar maksimum tombol */
+  display: inline-block; /* Memastikan tombol tidak menjadi elemen blok penuh */
+  text-align: center; /* Menyelaraskan teks di tengah */
+}
+
+.btn-print:hover {
+  background: linear-gradient(135deg, #eeddbc, #050b12, #eebdab);
+  transform: scale(1.05);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-print:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Card awal */
+.card-container-ticket {
+  max-width: 260px;
+  margin: 10px auto;
+  padding: 5px;
+  border: 1px solid #b3b3b3;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-container-ticket .card {
+  border-radius: 8px;
+  border: none;
+  overflow: hidden;
+}
+
+.card-container-ticket .card-header {
+  background-color: #627fa5;
+  color: white;
+  padding: 8px 12px;
+  font-size: 0.5 rem;
+  text-align: center;
+  font-weight: bold; 
+  border-bottom: 1px solid #b3b3b3;
+}
+
+.card-container-ticket .card-body {
+  padding: 10px;
+  font-size: 0.95rem;
+  color: #495057;
+  line-height: 1.4;
+}
+
+.card-container-ticket .card-body .card-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align:left;
+}
+
+.card-container-ticket .card-body .card-text {
+  margin-bottom: 15px;
+  font-family: 'Times New Roman', Times, serif;
+  text-align: start;
+}
+
+.card-container-ticket .status {
+  margin-top: 10px;
+  text-align: right;
+  font-size: 0.9rem;
+  color: green;
+  font-weight: bold;
+}
+
+.card-container-ticket .btn {
+  display: block;
+  width: 70%;
+  padding: 5px;
+  font-size: 1rem;
+  text-align: center;
+  color: white;
+  background-color: #062652;
+  border: none;
+  border-radius: 7px;
+  transition: background-color 0.3s;
+}
+
+.card-container-ticket .btn:hover {
+  background-color: #20abf0;
+}
+
+.card-container-ticket .btn:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+/* Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .ticket-container, .ticket-container * {
+    visibility: visible;
+  }  
+  
+}

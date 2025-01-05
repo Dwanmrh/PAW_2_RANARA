@@ -1,37 +1,246 @@
+<head>
+  <!-- Link Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+ 
+ 
+</head>
 
-  <body>
-    <div class="container py-5">
-      <h1 class="text-center mb-4 custom-heading">Form Order</h1>
-      <div class="text-center mt-4">
-        <img
-          src="/images/KursiBioskop.jpg"
-          alt="Gambar Kursi Bioskop"
-          class="img-fluid"
-          style="max-width: 100%; height: auto; max-height: 500px"
-        />
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Order Ticket</h1>
+    <div class="row mt-4">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-film me-2 text-primary"></i>
+            </div>
+            <div class="d-flex align-items-center">
+              <i class="fas fa-map-marker-alt me-2 text-danger"></i>RANARA CINEMA
+            </div>
+            <div class="mt-3">
+              <label for="datePicker" class="form-label"><strong><i class="fas fa-calendar-alt me-2"></i>Pilih Tanggal:</strong></label>
+              <input type="date" id="datePicker" class="form-control">
+            </div>
+            <div class="mt-4">
+              <p class="mb-3"><strong><i class="fas fa-clock me-2"></i>Jam Tayang:</strong></p>
+              <div id="timeContainer" class="d-flex flex-wrap gap-2">
+                <!-- Jam Tayang akan diisi oleh JavaScript -->
+              </div>
+            </div>
+            <div class="mt-4 text-center">
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#seatModal">
+                <i class="fas fa-ticket-alt"></i> Pilih Jadwal
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <form action="/order" method="POST" class="bg-light p-4 rounded shadow-sm">
-      <div class="mb-3">
-        <label for="name" class="form-label">Nomor Kursi:</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          class="form-control"
-          required
-        />
+  </div>
+
+  <div id="blurOverlay" class="blur-overlay"></div>
+
+  <!-- Modal Pilih Kursi -->
+  <div class="modal fade" id="seatModal" tabindex="-1" aria-labelledby="seatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="seatModalLabel"><i class="fas fa-chair me-2"></i>Pilih Kursi</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center ">
+            <div class="screen"><i class="fas fa-tv"></i> SCREEN</div>
+            <div id="seatContainer" class="seat-container">
+              <!-- Kursi akan diisi oleh JavaScript -->
+            </div>
+            <p><i class="fas fa-money-bill-wave me-2" style="color: darkred;"></i> <strong id="totalPrice" style="color: firebrick;">Rp 0</strong></p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" id="payButton"><i class="fas fa-credit-card me-2"></i>Bayar</button>
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="movie" class="form-label">Judul Film:</label>
-        <select id="movie" name="movie" class="form-select" required>
-          <% films.forEach((film) => { %>
-          <option value="<%= film.title %>"><%= film.title %></option>
-          <% }); %>
-        </select>
+    </div>
+  </div>
+
+<!-- Modal Pembayaran Berhasil -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered success-modal-dialog">
+    <div class="modal-content success-modal-content">
+      <div class="modal-body text-center">
+        <h5 class="success-icon"><i class="fas fa-check-circle fa-3x"></i></h5>
+        <h5 class="mt-3 success-title">Pembayaran Berhasil!</h5>
+        <p><i class="fas fa-chair me-2 success-icon-item"></i><strong id="seatSummary" class="seat-summary"></strong></p>
+        <p><i class="fas fa-money-bill-wave me-2 success-icon-item"></i> <strong id="totalSummary" class="total-summary"></strong></p>
+        <button class="btn btn-primary mt-3 success-close-btn" data-bs-dismiss="modal"><i class="fas fa-times me-2"></i>Tutup</button>
       </div>
-      <button type="submit" class="btn btn-primary w-100">Order</button>
-    </form>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+    </div>
+  </div>
+</div>
+
+  <!-- Modal QR Code -->
+<div class="modal" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered qr-modal-dialog">
+    <div class="modal-content qr-modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img id="qrCode" src="/images/qr.png" alt="QR Code" class="qr-img">
+        <p class="qr-text"><strong>Scan disini untuk Pembayaran!</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const datePicker = document.getElementById('datePicker');
+      datePicker.value = '';
+
+      datePicker.addEventListener('change', function() {
+        console.log('Tanggal yang dipilih: ' + datePicker.value);
+      });
+    });
+
+    const seatPrice = 40000;
+    const totalSeats = 50;
+    const seatsPerRow = 10;
+    const timeSchedule = ['11:45 - 14:22', '14:40 - 17:17', '17:35 - 20:12', '20:30 - 23:07'];
+
+    const timeContainer = document.getElementById('timeContainer');
+    const seatContainer = document.getElementById('seatContainer');
+    const totalPriceElement = document.getElementById('totalPrice');
+    const payButton = document.getElementById('payButton');
+    const seatSummary = document.getElementById('seatSummary');
+    const totalSummary = document.getElementById('totalSummary');
+    const blurOverlay = document.getElementById('blurOverlay');
+
+    let selectedTime = null;
+    let selectedSeats = new Set();
+
+    timeSchedule.forEach((time) => {
+      const button = document.createElement('button');
+      button.className = 'time-button';
+      button.innerHTML = `<i class="fas fa-clock"></i> ${time}`;
+
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.time-button').forEach((btn) => btn.classList.remove('selected'));
+        button.classList.add('selected');
+        selectedTime = time;
+      });
+
+      timeContainer.appendChild(button);
+    });
+
+    for (let i = 0; i < totalSeats; i++) {
+      const row = String.fromCharCode(65 + Math.floor(i / seatsPerRow));
+      const seatNumber = `${row}${(i % seatsPerRow) + 1}`;
+
+      if (i % seatsPerRow === 0) {
+        const seatRow = document.createElement('div');
+        seatRow.className = 'seat-row';
+        seatContainer.appendChild(seatRow);
+      }
+
+      const button = document.createElement('button');
+      button.className = 'seat-button';
+      button.textContent = seatNumber;
+
+      button.addEventListener('click', () => {
+        if (selectedSeats.has(seatNumber)) {
+          selectedSeats.delete(seatNumber);
+          button.classList.remove('selected');
+        } else {
+          selectedSeats.add(seatNumber);
+          button.classList.add('selected');
+        }
+        const total = selectedSeats.size * seatPrice;
+        totalPriceElement.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+      });
+
+      seatContainer.lastChild.appendChild(button);
+    }
+
+    payButton.addEventListener('click', () => {
+  // Memeriksa apakah tanggal, waktu, dan kursi sudah dipilih
+  if (!datePicker.value || !selectedTime || selectedSeats.size === 0) {
+    let missingFields = [];
+
+    if (!datePicker.value) {
+      missingFields.push("Tanggal");
+    }
+    if (!selectedTime) {
+      missingFields.push("Waktu");
+    }
+    if (selectedSeats.size === 0) {
+      missingFields.push("Kursi");
+    }
+
+    // Menampilkan alert dengan pesan yang sesuai
+    alert(`Silakan pilih ${missingFields.join(', ')} terlebih dahulu.`);
+    return; // Menghentikan eksekusi lebih lanjut jika ada yang belum dipilih
+  }
+  
+  
+
+  // Jika semua sudah dipilih, lanjutkan dengan pembayaran
+  const orderData = {
+    movie: "",
+    location: "RANARA CINEMA",
+    date: datePicker.value,
+    time: selectedTime,
+    seats: Array.from(selectedSeats),
+    total: selectedSeats.size * seatPrice,
+    bookingCode: `CODE${Math.random().toString(36).substr(2, 6).toUpperCase()}`
+  };
+
+  localStorage.setItem('orderData', JSON.stringify(orderData));
+
+  seatSummary.textContent = Array.from(selectedSeats).join(', ');
+  totalSummary.textContent = `Rp ${orderData.total.toLocaleString('id-ID')}`;
+  
+  // Menampilkan overlay dan modal sukses
+  blurOverlay.classList.add('active'); // Menambahkan class blur overlay
+  const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+  successModal.show();
+
+  // Menampilkan QR Modal setelah pembayaran
+  const qrModal = new bootstrap.Modal(document.getElementById('qrModal'));
+  qrModal.show();
+
+  // Menangani penutupan modal QR
+  const closeQRModal = document.getElementById('closeQRModal');
+  closeQRModal.addEventListener('click', () => {
+    qrModal.hide();
+    blurOverlay.classList.remove('active'); // Menghapus blur ketika modal QR ditutup
+  });
+
+  // Menangani penutupan modal sukses
+  const closeSuccessModal = document.getElementById('closeSuccessModal');
+  closeSuccessModal.addEventListener('click', () => {
+    successModal.hide();
+    blurOverlay.classList.remove('active'); // Menghapus blur ketika modal sukses ditutup
+  });
+
+  // Pastikan blur dihapus ketika modal ditutup melalui backdrop atau tombol tutup
+  $('#successModal').on('hidden.bs.modal', function () {
+    blurOverlay.classList.remove('active'); // Menghapus blur ketika modal sukses ditutup
+  });
+  $('#qrModal').on('hidden.bs.modal', function () {
+    blurOverlay.classList.remove('active'); // Menghapus blur ketika modal QR ditutup
+  });
+
+  // Reset seleksi setelah pembayaran
+  selectedSeats.clear();
+  seatContainer.querySelectorAll('.seat-button').forEach((btn) => btn.classList.remove('selected'));
+  totalPriceElement.textContent = 'Rp 0';
+});
+
+
+  </script>
+</body>
