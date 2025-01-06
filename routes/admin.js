@@ -28,34 +28,4 @@ router.get("/", isAuthenticated, (req, res) => {
     });
   });
   
-
-// Route untuk mengelola film
-router.get("/manage-films", isAuthenticated, isAdmin, (req, res) => {
-  db.query("SELECT * FROM films", (err, results) => {
-    if (err) {
-      console.error("Database Error (Fetching Films):", err.message);
-      return res.status(500).send("Error fetching films");
-    }
-
-    res.render("admin", {
-        layout: "admin", // Pastikan ini sesuai dengan file layout admin Anda
-      films: results,
-    });
-  });
-});
-
-// Route untuk menghapus film
-router.post("/delete-film/:id", isAuthenticated, isAdmin, (req, res) => {
-  const filmId = req.params.id;
-
-  db.query("DELETE FROM films WHERE id = ?", [filmId], (err) => {
-    if (err) {
-      console.error("Database Error (Deleting Film):", err.message);
-      return res.status(500).send("Error deleting film");
-    }
-
-    res.redirect("/admin"); // Pastikan URL redirect sesuai
-  });
-});
-
 module.exports = router;

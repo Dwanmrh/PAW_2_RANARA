@@ -11,22 +11,4 @@ function isUser(req, res, next) {
   next();
 }
 
-// Route untuk halaman utama user
-router.get("/", isAuthenticated, isUser, (req, res) => {
-  const username = req.session.username;
-
-  db.query("SELECT * FROM films", (err, results) => {
-    if (err) {
-      console.error("Database Error (Fetching Films):", err.message);
-      return res.status(500).send("Error fetching films");
-    }
-
-    res.render("user/home", {
-      layout: "layouts/main-layout",
-      username,
-      films: results,
-    });
-  });
-});
-
 module.exports = router;
