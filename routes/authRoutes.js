@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const bcrypt = require("bcryptjs");
 const db = require("../database/db");
-const { isAuthenticated } = require("../middlewares/middleware");
+const { isAuthenticated, isAdmin } = require("../middlewares/middleware");
 const router = express.Router();
 const path = require("path");
 const fs = require("fs");
@@ -500,6 +500,157 @@ router.get("/ticket", isAuthenticated, (req, res) => {
     user: req.session.username || null, // Kirimkan username jika user login
   });
 });
+
+router.get("/users/:id_users", (req, res) => {
+  const { id_users } = req.params;
+  db.query(
+    "SELECT * FROM users WHERE id_users = ?",
+    [id_users],
+    (err, results) => {
+      if (err) {
+        console.error("Database Error (Fetching User):", err.message);
+        return res.status(500).json({ error: "Error fetching user" });
+      }
+      if (results.length === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      res.json(results[0]);
+    }
+  );
+});
+
+// Route untuk menambahkan user baru
+router.post("/add/users", (req, res) => {
+  const { nama, username, password, email, role } = req.body;
+
+  // Daftar role yang valid
+  const validRoles = ['Admin', 'User'];
+
+  // Pastikan role yang dikirimkan valid
+  if (!validRoles.includes(role)) {
+    return res.status(400).json({ error: "Invalid role" });
+  }
+
+  if (!nama || !username || !password || !email || !role) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  db.query(
+    "INSERT INTO users (nama, username, password, email, role) VALUES (?, ?, ?, ?, ?)",
+    [nama, username, password, email, role],
+    (err, results) => {
+      if (err) {
+        console.error("Database Error (Adding User):", err.message);
+        return res.status(500).json({ error: "Error adding user" });
+      }
+      res.status(201).json({ message: "User added successfully", id: results.insertId });
+    }
+  );
+});
+
+
+// Route untuk memperbarui data user berdasarkan ID
+router.put("/update/users/:id_users", (req, res) => {
+  const { id_users } = req.params; // Get ID from URL params
+  const { nama, username, password, email, role } = req.body;
+
+  // Construct the SQL SET clause dynamically based on the fields provided
+  let setFields = [];
+  let values = [];
+
+  if (nama) {
+    setFields.push("nama = ?");
+    values.push(nama);
+  }
+  if (username) {
+    setFields.push("username = ?");
+    values.push(username);
+  }
+  if (password) {
+    setFields.push("password = ?");
+    values.push(password);
+  }
+  if (email) {
+    setFields.push("email = ?");
+    values.push(email);
+  }
+  if (role) {
+    // Validate role if provided
+    const validRoles = ['Admin', 'User'];
+    if (!validRoles.includes(role)) {
+      return res.status(400).json({ error: "Invalid role" });
+    }
+    setFields.push("role = ?");
+    values.push(role);
+  }
+
+  if (setFields.length === 0) {
+    return res.status(400).json({ error: "No fields provided to update" });
+  }
+
+  // Add the ID to the values array
+  values.push(id_users);
+
+  // Build the query dynamically
+  const query = `UPDATE users SET ${setFields.join(", ")} WHERE id_users = ?`;
+
+  db.query(query, values, (err, results) => {
+    if (err) {
+      console.error("Database Error (Updating User):", err.message);
+      return res.status(500).json({ error: "Error updating user" });
+    }
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json({ message: "User updated successfully" });
+  });
+});
+
+
+
+
+// Route untuk menghapus user berdasarkan ID
+router.delete("/delete/users/:id_users", (req, res) => {
+  const { id_users } = req.params;
+
+  db.query(
+    "DELETE FROM users WHERE id_users = ?",
+    [id_users],
+    (err, results) => {
+      if (err) {
+        console.error("Database Error (Deleting User):", err.message);
+        return res.status(500).json({ error: "Error deleting user" });
+      }
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      res.json({ message: "User deleted successfully" });
+    }
+  );
+});
+
+
+
+router.get("/users", (req, res) => {
+  db.query("SELECT * FROM users", (err, results) => {
+    if (err) {
+      console.error("Database Error (Fetching Users):", err.message);
+      return res.status(500).json({ error: "Error fetching users" });
+    }
+    res.status(200).json(results);
+  });
+});
+
+router.get("/mngUSer", isAuthenticated, isAdmin, (req, res) => {
+  db.query("SELECT * FROM users", (err, results) => {
+    if (err) {
+      console.error("Database Error (Fetching Users):", err.message);
+      return res.status(500).json({ error: "Error fetching users" });
+    }
+    res.render("mngUSer", { users: results });  // Mengirim data user ke halaman manageuser.ejs
+  });
+});
+
 
 // Route Logout
 router.post("/logout", (req, res) => {

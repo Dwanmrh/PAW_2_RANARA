@@ -1,0 +1,306 @@
+<body>
+  <div class="container-admin mt-5">
+  </div>
+
+  <div class="container mt-4">
+    <!-- Add Movie Form -->
+    <div class="mt-4">
+      <button class="btn btn-admin" data-bs-toggle="modal" data-bs-target="#addUserModal"><i data-feather="plus-circle"></i> Add User</button>
+    </div>
+
+    <div class="mt-4">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(user => { %>
+            <tr>
+              <td><%= user.nama %></td>
+              <td><%= user.username %></td>
+              <td><%= user.password %></td>
+              <td><%= user.email %></td>
+              <td><%= user.role %></td>
+              <td>
+              <div class="actions">
+                <button class="button editBtn" data-id_users="<%= user.id_users %>"><i data-feather="edit-3"></i></button>
+                <button class="button deleteBtn" data-id_users="<%= user.id_users %>"><i data-feather="trash-2"></i></button>
+              </div>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal for Add Film -->
+  <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addUserForm">
+            <div class="mb-3">
+              <label for="nama" class="form-label">Nama</label>
+              <input type="text" class="form-control" id="nama" required>
+            </div>
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" class="form-control" id="username" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="text" class="form-control" id="password" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" required>
+            </div>
+              <div class="mb-3">
+                <label class="form-label">Role</label>
+                <div style="display: flex; gap: 20px;">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="role" id="roleAdmin" value="Admin" required>
+                    <label class="form-check-label" for="roleAdmin">Admin</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="role" id="roleUser" value="User">
+                    <label class="form-check-label" for="roleUser">User</label>
+                  </div>
+                </div>
+              </div> 
+            <button type="submit" class="btn-actionAdm btn-primary">Simpan</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Modal for Edit Film -->
+  <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editUserForm">
+              <div class="mb-3">
+                  <label for="editNama" class="form-label">Nama</label>
+                  <input type="text" class="form-control" id="editNama" required>
+                </div>
+                <div class="mb-3">
+                  <label for="editUsername" class="form-label">Username</label>
+                  <input type="text" class="form-control" id="editUsername" required>
+                </div>
+                <div class="mb-3">
+                  <label for="editPassword" class="form-label">Password</label>
+                  <input type="text" class="form-control" id="editPassword" required>
+                </div>
+                <div class="mb-3">
+                  <label for="editEmail" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="editEmail" required>
+                </div>
+                  <div class="mb-3">
+                    <label class="form-label">Role</label>
+                    <div style="display: flex; gap: 20px;">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="role" id="editroleAdmin" value="Admin" required>
+                        <label class="form-check-label" for="roleAdmin">Admin</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="role" id="editroleUser" value="User">
+                        <label class="form-check-label" for="roleUser">User</label>
+                      </div>
+                    </div>
+                  </div>                  
+            <button type="submit" class="btn-actionAdm btn-primary">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" style="border-radius: 10px; overflow: hidden;">
+        <!-- Header -->
+        <div class="modal-header" style="background-color: #2C3E50; color: white; justify-content: space-between;">
+          <h5 class="modal-title" id="confirmDeleteModalLabel" style="margin: 0; font-weight: bold;">HAPUS USER</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
+        </div>
+  
+        <!-- Body -->
+        <div class="modal-body" style="background-color: #fdeee4; text-align: center; font-size: 16px; color: #000;">
+          Apakah anda yakin akan menghapus data user ini?
+        </div>
+  
+        <!-- Footer -->
+        <div class="modal-footer" style="background-color: #fdeee4; border-top: none; padding: 15px; display: flex; justify-content: flex-end; align-items: center; gap: 20px;">
+          <button type="button" class="btn-delete" data-bs-dismiss="modal" style="border: none; background-color: transparent; color: #000; font-size: 14px; font-weight: bold;">
+            Batal
+          </button>
+          <button type="button" class="btn-delete btn-danger" id="confirmDeleteBtn" style="background-color: #FF3D3D; color: white; font-size: 14px; font-weight: bold; border-radius: 5px; padding: 5px 15px;">
+            Ya
+          </button>
+        </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  feather.replace();
+  $(document).ready(function () {
+    // Add User
+    $("#addUserForm").on("submit", function (e) {
+      e.preventDefault();
+
+      const formData = {
+        nama: $("#nama").val(),
+        username: $("#username").val(),
+        password: $("#password").val(),
+        email: $("#email").val(),
+        role: $("input[name='role']:checked").val()
+      };
+
+      $.ajax({
+        url: "/add/users", 
+        type: "POST",
+        data: formData,
+        success: function () {
+          Swal.fire({
+            icon: 'success',
+            title: 'User Berhasil Ditambahkan!',
+            text: 'User baru telah ditambahkan.',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            location.reload(); 
+          });
+        },
+        error: function (error) {
+          console.error("Error adding user:", error.responseText);
+        },
+      });
+    });
+
+    // Edit User
+    let editId;
+    $(".editBtn").on("click", function () {
+      editId = $(this).data("id_users");
+
+      const currentName = $(this).closest("tr").find("td").eq(0).text();
+      const currentUsername = $(this).closest("tr").find("td").eq(1).text();
+      const currentPassword = $(this).closest("tr").find("td").eq(2).text();
+      const currentEmail = $(this).closest("tr").find("td").eq(3).text();
+      const currentRole = $(this).closest("tr").find("td").eq(4).text();
+
+      $("#editNama").val(currentName);
+      $("#editUsername").val(currentUsername);
+      $("#editPassword").val(currentPassword);
+      $("#editEmail").val(currentEmail);
+
+      if (currentRole === "Admin") {
+        $("#editroleAdmin").prop("checked", true);
+      } else {
+        $("#editroleUser ").prop("checked", true);
+      }
+
+      $("#editUserModal").modal("show"); 
+    });
+
+    $("#editUserForm").on("submit", function (e) {
+      e.preventDefault();
+
+      const formData = {
+        nama: $("#editNama").val(),
+        username: $("#editUsername").val(),
+        password: $("#editPassword").val(),
+        email: $("#editEmail").val(),
+        role: $("input[name='role']:checked").val()
+      };
+
+      $.ajax({
+        url: "/update/users/" + editId, 
+        type: "PUT",
+        data: formData,
+        success: function () {
+          Swal.fire({
+            icon: 'success',
+            title: 'User Berhasil Diperbarui!',
+            text: 'User telah berhasil diperbarui.',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            location.reload();
+          });
+        },
+        error: function (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Update User Gagal!',
+            text: error.responseText || 'An error occurred while updating the user.',
+            confirmButtonText: 'OK'
+          });
+          console.error("Error updating user:", error.responseText);
+        },
+      });
+    });
+
+
+    // hapus users
+    let deleteId;
+
+    $(".deleteBtn").on("click", function () {
+      deleteId = $(this).data("id_users");
+      $("#confirmDeleteModal").modal("show");
+    });
+
+    $("#confirmDeleteBtn").on("click", function () {
+      $.ajax({
+        url: "/delete/users/" + deleteId, 
+        type: "DELETE",
+        success: function () {
+          Swal.fire({
+            icon: 'success',
+            title: 'User Berhasil Dihapus!',
+            text: 'User telah berhasil dihapus.',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            location.reload(); 
+          });
+        },
+        error: function (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error Deleting User',
+            text: error.responseText || 'An error occurred while deleting the user.',
+            confirmButtonText: 'OK'
+          });
+          console.error("Error deleting user:", error.responseText);
+        },
+      });
+      $("#confirmDeleteModal").modal("hide");
+    });
+  })
+</script>
+</body> 

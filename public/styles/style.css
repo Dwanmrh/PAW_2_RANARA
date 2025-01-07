@@ -14,14 +14,13 @@ body::-webkit-scrollbar {
 }
 
 .custom-heading {
-  font-family: 'Poppins', sans-serif;; /* Ganti dengan font yang diinginkan */
+  font-family: 'Poppins', sans-serif; /* Ganti dengan font yang diinginkan */
   font-size: 2.5rem; /* Atur ukuran font */
   font-weight: 700; /* Atur ketebalan font */
   color: black; /* Ubah warna jika diperlukan */
   text-transform: uppercase; /* Opsional: ubah teks menjadi huruf kapital */
   letter-spacing: 1px; /* Opsional: tambahkan spasi antar huruf */
 }
-
 
 h1,
 h5 {
@@ -381,9 +380,13 @@ p {
   padding: 10px;
 }
 
+.table th:last-child,
+.table td:last-child {
+  width: 100px; /* Sesuaikan dengan kebutuhan */
+}
+
 .actions {
   display: flex;
-  justify-content: space-between; /* Membuat button sejajar kanan dan kiri */
   gap: 10px; /* Memberikan jarak antar button */
 }
 
@@ -573,13 +576,6 @@ button.btn-close {
   font-size: small;
 }
 
-
-
-
-
-
-
-
 /* Halaman ORDER*/
 .time-button {
   display: flex;
@@ -766,21 +762,6 @@ button.btn-close {
 .success-close-btn:focus {
   outline: none;  /* Menghilangkan outline saat tombol fokus */
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*Halaman Ticket*/
 
