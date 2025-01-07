@@ -935,3 +935,18 @@ button.btn-close {
   }  
   
 }
+
+#synopsisTitle {
+  font-weight: bold;
+  color: #333;
+}
+
+#synopsisRating {
+  font-size: 1.2em;
+  color: #fbc02d; /* Warna bintang kuning */
+}
+
+#synopsisDuration {
+  font-size: 1em;
+  color: #555;
+}
