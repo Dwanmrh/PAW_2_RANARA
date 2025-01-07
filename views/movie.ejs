@@ -130,7 +130,17 @@
           </div>
           <!-- Sinopsis -->
           <div class="col-md-8">
-            <div id="synopsisContent"></div>
+            <!-- Judul Film -->
+            <h3 id="synopsisTitle" class="mb-2">SYNOPSIS</h3>
+            <!-- Rating dan Durasi -->
+            <div class="d-flex align-items-center mb-3">
+              <div id="synopsisRating" class="me-3">
+                ⭐⭐⭐⭐☆ <!-- Placeholder Rating -->
+              </div>
+              <span id="synopsisDuration">1j 50m</span>
+            </div>
+            <!-- Sinopsis -->
+            <div id="synopsisContent">Sinopsis film akan muncul di sini...</div>
           </div>
         </div>
       </div>
@@ -140,6 +150,7 @@
     </div>
   </div>
 </div>
+
 
 <script>
   function showSynopsis(id) {
