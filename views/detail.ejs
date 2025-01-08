@@ -1,4 +1,3 @@
-
 <body>
   <div class="container mt-5">
     <h1 class="text-center mb-4">Detail Tiket</h1>
@@ -43,11 +42,19 @@
             const ticketDetails = document.createElement("div");
             ticketDetails.className = "ticket-details";
             ticketDetails.innerHTML = `
-              <strong>Harga:</strong> Rp ${ticket.total_harga}<br>
+              <div class="barcode">
+                <div></div><div></div><div></div><div></div><div></div><div></div>
+                <div></div><div></div><div></div><div></div><div></div><div></div>
+                <div></div><div></div><div></div><div></div><div></div><div></div>
+                <div></div><div></div><div></div><div></div><div></div><div></div>
+                <div></div><div></div><div></div><div></div><div></div><div></div>
+                <div></div><div></div><div></div><div></div><div></div>
+              </div>
               <strong>Tanggal:</strong> ${ticket.date}<br>
               <strong>Jam:</strong> ${ticket.time}<br>
               <strong>Kursi:</strong> ${ticket.no_kursi}
             `;
+            ticketDetails.style.display = "none"; // Detail disembunyikan awalnya
 
             const toggleButton = document.createElement("button");
             toggleButton.className = "btn btn-outline-primary btn-toggle w-100";
@@ -62,10 +69,41 @@
                 : "<i class='fas fa-ticket-alt me-2'></i>Lihat Detail";
             });
 
+            // Tombol Cetak Tiket
+            const printButton = document.createElement("button");
+            printButton.className = "btn btn-outline-success btn-print w-100 mt-2";
+            printButton.innerHTML = "<i class='fas fa-print me-2'></i>Cetak Tiket";
+
+            printButton.addEventListener("click", () => {
+              const printContent = `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                  <h2>Tiket: ${ticket.title}</h2>
+                 <p> <div class="barcode">
+                    <div></div><div></div><div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div><div></div>
+                  </div> </p>
+                  <p><strong>Kode Booking:</strong> ${ticket.kode_bk}</p>
+                  <p><strong>Harga:</strong> Rp ${ticket.total_harga}</p>
+                  <p><strong>Tanggal:</strong> ${ticket.date}</p>
+                  <p><strong>Jam:</strong> ${ticket.time}</p>
+                  <p><strong>Kursi:</strong> ${ticket.no_kursi}</p>
+                </div>
+              `;
+              const newWindow = window.open('', '_blank', 'width=600,height=400');
+              newWindow.document.write(printContent);
+              newWindow.document.close();
+              newWindow.print();
+            });
+
             card.appendChild(cardHeader);
             card.appendChild(ticketPrice);
             card.appendChild(ticketDetails);
             card.appendChild(toggleButton);
+            card.appendChild(printButton);
 
             col.appendChild(card);
             ticketContainer.appendChild(col);
@@ -83,4 +121,3 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
