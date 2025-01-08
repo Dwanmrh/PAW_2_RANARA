@@ -18,6 +18,7 @@
             <th>Genre</th>
             <th>Duration</th>
             <th>Description</th>
+            <th>Poster</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -28,6 +29,9 @@
               <td><%= film.genre %></td>
               <td><%= film.duration %></td>
               <td><%= film.description %></td>
+              <td>
+                <img src="<%= film.picture ? '/images/' + film.picture : '/default-image.jpg' %>" alt="Film Picture" width="100">
+            </td>
               <td>
               <div class="actions">
                 <button class="button editBtn" data-id_film="<%= film.id_film %>" data-picture="<%= film.picture %>">

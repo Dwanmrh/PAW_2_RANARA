@@ -16,6 +16,8 @@ const fs = require("fs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+module.exports = app;
+
 // Konfigurasi session
 app.use(
   session({
