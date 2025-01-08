@@ -19,7 +19,9 @@
           </h6>
         </div>
         <div class="card-footer text-center">
-          <a class="btn btn-primary" href="/order?film=<%= film.id_film %>">Pesan</a>
+          <a class="btn btn-primary" href="/order?film=<%= film.id_film %>"
+            >Pesan</a
+          >
         </div>
       </div>
     </div>
@@ -71,7 +73,7 @@
 </div>
 
 <script>
-function showSynopsis(id) {
+  function showSynopsis(id) {
     fetch(`/films/${id}`)
       .then((response) => {
         if (!response.ok) {
@@ -90,7 +92,7 @@ function showSynopsis(id) {
         document.getElementById("synopsisModalLabel").innerText =
           data.title || "Judul tidak tersedia"; // Title diambil dari database
 
-          // Update tombol "Pesan" di modal
+        // Update tombol "Pesan" di modal
         const orderButton = document.querySelector(
           "#synopsisModal .modal-footer .btn-secondary"
         );
