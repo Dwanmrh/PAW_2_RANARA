@@ -193,12 +193,13 @@ router.delete("/delete/films/:id", (req, res) => {
 router.get("/pesanan", (req, res) => {
   db.query("SELECT * FROM pesanan", (err, results) => {
     if (err) {
-      console.error("Database Error (Fetching Pesanan):", err.message);
+      console.error("Database Error (Fetching pesanan):", err.message);
       return res.status(500).json({ error: "Error fetching pesanan" });
     }
     res.status(200).json(results);
   });
 });
+
 
 // Route untuk Get Pesanan By ID
 router.get("/pesanan/:id", (req, res) => {
@@ -488,24 +489,24 @@ router.post("/order", (req, res) => {
         time,
         no_kursi,
       };
-      res.redirect("/ticket");
+      res.redirect("/detail");
     }
   );
 });
 
 // Route untuk halaman Ticket
-router.get("/ticket", isAuthenticated, (req, res) => {
-  res.render("ticket", {
+router.get("/detail", isAuthenticated, (req, res) => {
+  res.render("detail", {
     layout: "layouts/main-layout",
     user: req.session.username || null, // Kirimkan username jika user login
   });
 });
 
-router.get("/users/:id_users", (req, res) => {
-  const { id_users } = req.params;
+router.get("/users/:id_user", (req, res) => {
+  const { id_user } = req.params;
   db.query(
-    "SELECT * FROM users WHERE id_users = ?",
-    [id_users],
+    "SELECT * FROM users WHERE id_user = ?",
+    [id_user],
     (err, results) => {
       if (err) {
         console.error("Database Error (Fetching User):", err.message);
@@ -550,8 +551,8 @@ router.post("/add/users", (req, res) => {
 
 
 // Route untuk memperbarui data user berdasarkan ID
-router.put("/update/users/:id_users", (req, res) => {
-  const { id_users } = req.params; // Get ID from URL params
+router.put("/update/users/:id_user", (req, res) => {
+  const { id_user } = req.params; // Get ID from URL params
   const { nama, username, password, email, role } = req.body;
 
   // Construct the SQL SET clause dynamically based on the fields provided
@@ -589,10 +590,10 @@ router.put("/update/users/:id_users", (req, res) => {
   }
 
   // Add the ID to the values array
-  values.push(id_users);
+  values.push(id_user);
 
   // Build the query dynamically
-  const query = `UPDATE users SET ${setFields.join(", ")} WHERE id_users = ?`;
+  const query = `UPDATE users SET ${setFields.join(", ")} WHERE id_user = ?`;
 
   db.query(query, values, (err, results) => {
     if (err) {
@@ -610,12 +611,12 @@ router.put("/update/users/:id_users", (req, res) => {
 
 
 // Route untuk menghapus user berdasarkan ID
-router.delete("/delete/users/:id_users", (req, res) => {
-  const { id_users } = req.params;
+router.delete("/delete/users/:id_user", (req, res) => {
+  const { id_user } = req.params;
 
   db.query(
-    "DELETE FROM users WHERE id_users = ?",
-    [id_users],
+    "DELETE FROM users WHERE id_user = ?",
+    [id_user],
     (err, results) => {
       if (err) {
         console.error("Database Error (Deleting User):", err.message);
@@ -641,6 +642,7 @@ router.get("/users", (req, res) => {
   });
 });
 
+// Routes untuk get All User
 router.get("/mngUSer", isAuthenticated, isAdmin, (req, res) => {
   db.query("SELECT * FROM users", (err, results) => {
     if (err) {

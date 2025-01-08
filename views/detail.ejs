@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Tiket</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #253556;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .ticket-card {
+      position: relative;
+      background: linear-gradient(135deg, #ffffff, #e8eaf6);
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 20px 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .ticket-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .ticket-header {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #d8be78;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .ticket-price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #373b3a;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .ticket-details {
+      font-size: 1rem;
+      color: #34495e;
+      line-height: 1.8;
+      display: none;
+      border-top: 1px dashed #ddd;
+      padding-top: 10px;
+    }
+
+    .ticket-card::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -10px;
+      width: 20px;
+      height: 20px;
+      background: #f3f4f6;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+
+    .ticket-card::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -10px;
+      width: 20px;
+      height: 20px;
+      background: #f3f4f6;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+
+    .btn-toggle {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Detail Tiket</h1>
+    <div class="row" id="ticketContainer">
+      <!-- Kartu tiket akan di-generate di sini -->
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      fetch("/pesanan")
+        .then((response) => {
+          if (!response.ok) throw new Error("Failed to fetch tickets: " + response.status);
+          return response.json();
+        })
+        .then((tickets) => {
+          const ticketContainer = document.getElementById("ticketContainer");
+
+          if (tickets.length === 0) {
+            const noTicketsMessage = document.createElement("p");
+            noTicketsMessage.textContent = "Belum ada tiket yang disimpan.";
+            noTicketsMessage.className = "text-center text-muted";
+            ticketContainer.appendChild(noTicketsMessage);
+            return;
+          }
+
+          tickets.forEach((ticket) => {
+            const col = document.createElement("div");
+            col.className = "col-md-6 col-lg-4 mb-4";
+
+            const card = document.createElement("div");
+            card.className = "ticket-card";
+
+            const cardHeader = document.createElement("div");
+            cardHeader.className = "ticket-header";
+            cardHeader.textContent = ticket.title;
+
+            const ticketPrice = document.createElement("div");
+            ticketPrice.className = "ticket-price";
+            ticketPrice.textContent = `${ticket.kode_bk.toLocaleString("id-ID")}`;
+
+            const ticketDetails = document.createElement("div");
+            ticketDetails.className = "ticket-details";
+            ticketDetails.innerHTML = `
+              <strong>Harga:</strong> Rp ${ticket.total_harga}<br>
+              <strong>Tanggal:</strong> ${ticket.date}<br>
+              <strong>Jam:</strong> ${ticket.time}<br>
+              <strong>Kursi:</strong> ${ticket.no_kursi}
+            `;
+
+            const toggleButton = document.createElement("button");
+            toggleButton.className = "btn btn-outline-primary btn-toggle w-100";
+            toggleButton.innerHTML = "<i class='fas fa-ticket-alt me-2'></i>Lihat Detail";
+
+            let isExpanded = false;
+            toggleButton.addEventListener("click", () => {
+              isExpanded = !isExpanded;
+              ticketDetails.style.display = isExpanded ? "block" : "none";
+              toggleButton.innerHTML = isExpanded
+                ? "<i class='fas fa-minus me-2'></i>Sembunyikan Detail"
+                : "<i class='fas fa-ticket-alt me-2'></i>Lihat Detail";
+            });
+
+            card.appendChild(cardHeader);
+            card.appendChild(ticketPrice);
+            card.appendChild(ticketDetails);
+            card.appendChild(toggleButton);
+
+            col.appendChild(card);
+            ticketContainer.appendChild(col);
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching tickets:", error);
+          const errorMessage = document.createElement("p");
+          errorMessage.textContent = "Terjadi kesalahan saat mengambil data tiket.";
+          errorMessage.className = "text-center text-danger";
+          ticketContainer.appendChild(errorMessage);
+        });
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

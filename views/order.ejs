@@ -40,10 +40,11 @@
             <div class="mt-4 text-center">
               <button
                 class="btn btn-primary"
+                id="payButton"
                 data-bs-toggle="modal"
                 data-bs-target="#seatModal"
               >
-                <i class="fas fa-ticket-alt"></i> Pilih Kursi
+                <i class="fas fa-credit-card me-2"></i> Bayar
               </button>
             </div>
           </div>
@@ -88,10 +89,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-admin" id="saveButton">
-            <i class="fas fa-credit-card me-2"></i>Simpan Pesanan
-          </button>
-          <button class="btn btn-success" id="payButton">
+          <button class="btn btn-success" id="payButtonFinal">
             <i class="fas fa-credit-card me-2"></i>Bayar
           </button>
         </div>
@@ -206,8 +204,7 @@
     const timeContainer = document.getElementById("timeContainer");
     const seatContainer = document.getElementById("seatContainer");
     const totalPriceElement = document.getElementById("totalPrice");
-    const saveButton = document.getElementById("saveButton");
-    const payButton = document.getElementById("payButton");
+    const payButtonFinal = document.getElementById("payButtonFinal");
     const seatSummary = document.getElementById("seatSummary");
     const totalSummary = document.getElementById("totalSummary");
     const blurOverlay = document.getElementById("blurOverlay");
@@ -260,9 +257,21 @@
       seatContainer.lastChild.appendChild(button);
     }
 
-    saveButton.addEventListener("click", () => {
+    payButtonFinal.addEventListener("click", () => {
       if (!datePicker.value || !selectedTime || selectedSeats.size === 0) {
-        alert("Silakan lengkapi data sebelum menyimpan pesanan.");
+        let missingFields = [];
+
+        if (!datePicker.value) {
+          missingFields.push("Tanggal");
+        }
+        if (!selectedTime) {
+          missingFields.push("Waktu");
+        }
+        if (selectedSeats.size === 0) {
+          missingFields.push("Kursi");
+        }
+
+        alert(`Silakan pilih ${missingFields.join(", ")} terlebih dahulu.`);
         return;
       }
 
@@ -274,7 +283,6 @@
         return;
       }
 
-      // Fetch title berdasarkan filmId
       fetch(`/films/${filmId}`)
         .then((response) => {
           if (!response.ok) {
@@ -290,10 +298,10 @@
               .toUpperCase()}`,
             total_harga: selectedSeats.size * seatPrice,
             total_tiket: selectedSeats.size,
-            title: film.title, // Title dari data film
+            title: film.title,
             date: datePicker.value,
             time: selectedTime,
-            no_kursi: Array.from(selectedSeats).join(", "), // Gabungkan kursi menjadi string
+            no_kursi: Array.from(selectedSeats).join(", "),
           };
 
           return fetch("/add/pesanan", {
@@ -313,93 +321,41 @@
         .then((data) => {
           alert("Pesanan berhasil disimpan!");
           console.log("Pesanan ID:", data.id);
+
+          seatSummary.textContent = Array.from(selectedSeats).join(", ");
+          totalSummary.textContent = `Rp ${(
+            selectedSeats.size * seatPrice
+          ).toLocaleString("id-ID")}`;
+
+          blurOverlay.classList.add("active");
+          const successModal = new bootstrap.Modal(
+            document.getElementById("successModal")
+          );
+          successModal.show();
+
+          const qrModal = new bootstrap.Modal(
+            document.getElementById("qrModal")
+          );
+          qrModal.show();
+
+          qrModal._element.addEventListener("hidden.bs.modal", () => {
+            blurOverlay.classList.remove("active");
+          });
+
+          successModal._element.addEventListener("hidden.bs.modal", () => {
+            blurOverlay.classList.remove("active");
+          });
+
+          selectedSeats.clear();
+          seatContainer
+            .querySelectorAll(".seat-button")
+            .forEach((btn) => btn.classList.remove("selected"));
+          totalPriceElement.textContent = "Rp 0";
         })
         .catch((error) => {
           console.error("Error:", error);
           alert("Terjadi kesalahan saat menyimpan pesanan.");
         });
-    });
-
-    payButton.addEventListener("click", () => {
-      // Memeriksa apakah tanggal, waktu, dan kursi sudah dipilih
-      if (!datePicker.value || !selectedTime || selectedSeats.size === 0) {
-        let missingFields = [];
-
-        if (!datePicker.value) {
-          missingFields.push("Tanggal");
-        }
-        if (!selectedTime) {
-          missingFields.push("Waktu");
-        }
-        if (selectedSeats.size === 0) {
-          missingFields.push("Kursi");
-        }
-
-        // Menampilkan alert dengan pesan yang sesuai
-        alert(`Silakan pilih ${missingFields.join(", ")} terlebih dahulu.`);
-        return; // Menghentikan eksekusi lebih lanjut jika ada yang belum dipilih
-      }
-
-      // Jika semua sudah dipilih, lanjutkan dengan pembayaran
-      const orderData = {
-        movie: "",
-        location: "RANARA CINEMA",
-        date: datePicker.value,
-        time: selectedTime,
-        seats: Array.from(selectedSeats),
-        total: selectedSeats.size * seatPrice,
-        bookingCode: `CODE${Math.random()
-          .toString(36)
-          .substr(2, 6)
-          .toUpperCase()}`,
-      };
-
-      localStorage.setItem("orderData", JSON.stringify(orderData));
-
-      seatSummary.textContent = Array.from(selectedSeats).join(", ");
-      totalSummary.textContent = `Rp ${orderData.total.toLocaleString(
-        "id-ID"
-      )}`;
-
-      // Menampilkan overlay dan modal sukses
-      blurOverlay.classList.add("active"); // Menambahkan class blur overlay
-      const successModal = new bootstrap.Modal(
-        document.getElementById("successModal")
-      );
-      successModal.show();
-
-      // Menampilkan QR Modal setelah pembayaran
-      const qrModal = new bootstrap.Modal(document.getElementById("qrModal"));
-      qrModal.show();
-
-      // Menangani penutupan modal QR
-      const closeQRModal = document.getElementById("closeQRModal");
-      closeQRModal.addEventListener("click", () => {
-        qrModal.hide();
-        blurOverlay.classList.remove("active"); // Menghapus blur ketika modal QR ditutup
-      });
-
-      // Menangani penutupan modal sukses
-      const closeSuccessModal = document.getElementById("closeSuccessModal");
-      closeSuccessModal.addEventListener("click", () => {
-        successModal.hide();
-        blurOverlay.classList.remove("active"); // Menghapus blur ketika modal sukses ditutup
-      });
-
-      // Pastikan blur dihapus ketika modal ditutup melalui backdrop atau tombol tutup
-      $("#successModal").on("hidden.bs.modal", function () {
-        blurOverlay.classList.remove("active"); // Menghapus blur ketika modal sukses ditutup
-      });
-      $("#qrModal").on("hidden.bs.modal", function () {
-        blurOverlay.classList.remove("active"); // Menghapus blur ketika modal QR ditutup
-      });
-
-      // Reset seleksi setelah pembayaran
-      selectedSeats.clear();
-      seatContainer
-        .querySelectorAll(".seat-button")
-        .forEach((btn) => btn.classList.remove("selected"));
-      totalPriceElement.textContent = "Rp 0";
     });
   </script>
 </body>

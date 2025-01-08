@@ -30,8 +30,8 @@
               <td><%= user.role %></td>
               <td>
               <div class="actions">
-                <button class="button editBtn" data-id_users="<%= user.id_users %>"><i data-feather="edit-3"></i></button>
-                <button class="button deleteBtn" data-id_users="<%= user.id_users %>"><i data-feather="trash-2"></i></button>
+                <button class="button editBtn" data-id_user="<%= user.id_user %>"><i data-feather="edit-3"></i></button>
+                <button class="button deleteBtn" data-id_user="<%= user.id_user %>"><i data-feather="trash-2"></i></button>
               </div>
               </td>
             </tr>
@@ -208,7 +208,7 @@
     // Edit User
     let editId;
     $(".editBtn").on("click", function () {
-      editId = $(this).data("id_users");
+      editId = $(this).data("id_user");
 
       const currentName = $(this).closest("tr").find("td").eq(0).text();
       const currentUsername = $(this).closest("tr").find("td").eq(1).text();
@@ -272,7 +272,7 @@
     let deleteId;
 
     $(".deleteBtn").on("click", function () {
-      deleteId = $(this).data("id_users");
+      deleteId = $(this).data("id_user");
       $("#confirmDeleteModal").modal("show");
     });
 
