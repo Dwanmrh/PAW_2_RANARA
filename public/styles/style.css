@@ -637,13 +637,30 @@ button.btn-close {
   color: #1c4225;
 }
 
+
+
+.seat-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Jarak antar baris */
+}
+
 .seat-row {
   display: flex;
-  justify-content: center;
-  flex-wrap: nowrap;
-  margin-bottom: 10px;
-  max-width: 100%;
+  justify-content: space-evenly; /* Sebar kursi dengan jarak yang sama */
+  gap: 2px; /* Jarak antar kursi dalam baris */
 }
+
+.seat-row > .seat-button:nth-child(5) {
+  margin-right: 23px; /* Jarak lebih besar setelah kursi ke-5 */
+}
+
+/* Pastikan baris E tidak berubah */
+.seat-row:nth-child(5) > .seat-button {
+  margin: 1px;
+ 
+}
+
 
 .screen {
   text-align: center;
