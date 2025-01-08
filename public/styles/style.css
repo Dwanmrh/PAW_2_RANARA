@@ -44,7 +44,7 @@ h6{
   border-radius: 20px; /* Membuat sudut melengkung */
   padding: 10px 20px; /* Spasi dalam navbar */
   margin: 20px auto; /* Spasi di sekitar navbar */
-  max-width: 95%; /* Batasi lebar navbar */
+  width: 95%; /* Batasi lebar navbar */
 }
 
 /* Navbar styles */
