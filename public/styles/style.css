@@ -204,12 +204,12 @@ label {
 
 /* Footer styles */
 footer {
-  position: relative; /* Mengikuti alur halaman */
-  transform: translateY(100%); /* Geser footer ke luar layar */
-  transition: transform 0.3s ease-in-out; /* Efek transisi saat muncul */
-  background-color: #202e38;
-  color: white;
-  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 20px; /* Membuat sudut melengkung */
+  padding: 10px 20px; /* Spasi dalam navbar */
+  margin: 120px auto 20px; /* Spasi di sekitar navbar */
+  width: 95%; /* Batasi lebar navbar */
+  background-color: #758694;
   text-align: center;
 }
 
