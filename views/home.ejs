@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <h1 class="text-center mb-4 custom-heading">DAFTAR FILM</h1>
+  <h1 class="text-center mb-4 custom-heading">Sedang Tayang</h1>
   <div class="row">
     <% films.forEach((film) => { %>
     <div class="col-md-4 mb-4">
@@ -19,9 +19,7 @@
           </h6>
         </div>
         <div class="card-footer text-center">
-          <a class="btn btn-primary" href="/order?film=<%= film.id_film %>"
-            >Pesan</a
-          >
+          <a class="btn btn-primary" href="/order?film=<%= film.id_film %>">Pesan</a>
         </div>
       </div>
     </div>
@@ -61,25 +59,47 @@
           </div>
           <!-- Sinopsis -->
           <div class="col-md-8">
-            <div id="synopsisContent"></div>
+            <h3 id="synopsisTitle" class="mb-2">SINOPSIS</h3>
+            <!-- Rating dan Durasi -->
+            <div class="d-flex align-items-center mb-3">
+              <div id="synopsisRating" class="me-3"></div>
+              <span id="synopsisDuration">1j 50m</span>
+            </div>
+            <!-- Sinopsis -->
+            <div id="synopsisContent">Sinopsis film akan muncul di sini...</div>
           </div>
         </div>
       </div>
       <div class="modal-footer text-center">
-        <a class="btn btn-secondary" href="#">Pesan</a>
+        <a class="btn btn-secondary" href="/order">Pesan</a>
       </div>
     </div>
   </div>
 </div>
 
 <script>
+  // Fungsi untuk membuat bintang
+  function setRating(rating) {
+    const maxStars = 5; // Jumlah maksimal bintang
+    const filledStar = "⭐"; // Bintang terisi
+    const emptyStar = "☆"; // Bintang kosong
+
+    // Membuat string bintang berdasarkan rating
+    let stars =
+      filledStar.repeat(Math.floor(rating)) +
+      emptyStar.repeat(maxStars - Math.floor(rating));
+
+    // Menampilkan bintang di elemen
+    document.getElementById("synopsisRating").textContent = stars;
+  }
+
+  // Fungsi untuk menampilkan sinopsis
   function showSynopsis(id) {
     fetch(`/films/${id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Failed to fetch film: ${response.status}`);
         }
-
         return response.json();
       })
       .then((data) => {
@@ -92,11 +112,8 @@
         document.getElementById("synopsisModalLabel").innerText =
           data.title || "Judul tidak tersedia"; // Title diambil dari database
 
-        // Update tombol "Pesan" di modal
-        const orderButton = document.querySelector(
-          "#synopsisModal .modal-footer .btn-secondary"
-        );
-        orderButton.href = `/order?film=${data.id_film}`;
+        // Set rating menggunakan fungsi setRating
+        setRating(data.rating || 0); // Rating diambil dari data, default 0 jika tidak ada
 
         // Tampilkan modal
         const modal = new bootstrap.Modal(
