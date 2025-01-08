@@ -317,8 +317,11 @@ p {
   background-color: #213555; /* Ganti dengan warna yang diinginkan */
   color: white; /* Warna teks pada tombol */
   border: none; /* Menghilangkan border */
-  font-family: 'Poppins', sans-serif;;
-  font-weight: bold; 
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  border-radius: 10px; /* Menambahkan sudut melengkung pada tombol */
+  padding: 8px; /* Memberikan sedikit padding agar tombol tidak terlalu kecil */
+  width: 100%; 
 }
 
 .btn:hover {
