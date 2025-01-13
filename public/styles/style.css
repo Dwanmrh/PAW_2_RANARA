@@ -30,9 +30,9 @@ h5 {
   padding-bottom: 5px;
   font-family: 'Poppins', sans-serif;;
 }
-p{
+/* p{
   padding-bottom: 0;
-}
+} */
 h6{
   font-size: 12px;
   padding-top: 0;
@@ -300,7 +300,8 @@ h1 {
 }
 
 p {
-  text-align: center;
+  text-align:center;
+  margin-top: 10px
 }
 
 /* Mengubah font placeholder hanya pada form input login */
@@ -593,6 +594,9 @@ button.btn-close {
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: 100%; 
+  max-width: 92px; 
+  margin: 2.2px; /* Memberi jarak antar tombol */
 }
 
 .time-button i {
@@ -668,7 +672,7 @@ button.btn-close {
   color: #fff;
   background-color: #374151;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   width: 100%;
 }
 
@@ -1029,6 +1033,7 @@ button.btn-close {
   justify-content: center; /* Menengahkan konten secara vertikal */
   align-items: center; /* Menengahkan konten secara horizontal */
   text-align:start; 
+  width: 100%;
   
 }
 
@@ -1086,7 +1091,7 @@ button.btn-close {
   margin-bottom: 35px;
   border-radius: 3px;
   display: flex;
-  justify-content:space-between;
+  justify-content:center;
   align-items:end;
   overflow: hidden;
   position: relative;
@@ -1094,10 +1099,11 @@ button.btn-close {
 }
 
 .barcode div {
-  width: 15px;
+  width: 50px;
   height: 100%;
   background-color: #533f19;
   margin: 0 1px;
+  flex: 1;
 }
 
 
@@ -1144,3 +1150,7 @@ button.btn-close {
   border-bottom: 3px solid #05426b;
 }
 
+/*  
+  text-align:center;
+  margin-top: 5px
+} */

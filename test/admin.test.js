@@ -23,27 +23,34 @@ describe('POST /add/films', () => {
   
   // Testing API untuk mengupdate film
 // Testing API untuk mengupdate film
-describe('PUT /update/films/:id', () => {
-  it('should update film details successfully', async () => {
-    const id_films = 25;  // Pastikan ini adalah ID film yang valid
-    const response = await request(app)
-      .put(`/update/films/${id_films}`)
-      .field('title', 'UTUSAN IBLIS')
-      .field('genre', 'Horor')
-      .field('duration', '1j 30m')
-      .field('description', 'Olivia, seorang psikiater, membantu polisi Rendy menyelidiki kasus pembantaian yang dilakukan Cantika. Seiring penyelidikan, Olivia mulai terpengaruh oleh kejadian aneh yang mengungkap luka masa lalunya, dan menyadari bahwa ia berinteraksi dengan sesuatu dalam dirinya, bukan Cantika.')
-      .attach('picture', './public/images/utusan-iblis.jpg');  // Kirimkan gambar seperti saat menambahkan film
-  
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('message', 'Film berhasil diperbarui');
+describe('Testing API untuk mengupdate film', () => {
+  describe('PUT /update/films/:id', () => {
+    it('should update film details successfully', async () => {
+      const id_film = 10;  // Pastikan ini adalah ID film yang valid dalam database Anda
+      const response = await request(app)
+        .put(`/update/films/${id_film}`)
+        .field('title', 'MOANA1')
+        .field('genre', 'Horor')
+        .field('duration', '1j 30m')
+        .field('description', 'Olivia, seoranodeng psikiater, membantu polisi Rendy menyelidiki kasus pembantaian yang dilakukan Cantika.')
+        .attach('picture', './public/images/utusan-iblis.jpeg');  // Kirimkan gambar seperti saat menambahkan film
+
+      // Log full response for debugging
+      console.log('Response:', response.body);
+
+      // Assertions
+      expect(response.status).toBe(200);  // Mengharapkan status 200 OK
+      expect(response.body).toHaveProperty('message', 'Film berhasil diperbarui');  // Memeriksa pesan sukses
+    });
   });
 });
+
 
   
   // Testing API untuk menghapus film
   describe('DELETE /delete/films/:id', () => {
     it('should delete a film successfully', async () => {
-      const id_films = 29;  // Ganti dengan ID film yang ada di database
+      const id_films = 15;  // Ganti dengan ID film yang ada di database
       const response = await request(app)
         .delete(`/delete/films/${id_films}`);
   
