@@ -234,18 +234,19 @@ $("#editFilmForm").on("submit", function (e) {
   formData.append("description", $("#editDescription").val());
 
   const newPicture = $("#editPicture")[0].files[0];
-if (newPicture) {
-  formData.append("picture", newPicture);
-} else {
-  const currentPicture = $("#currentPicture").attr("src");
-  if (currentPicture) {
-    formData.append("currentPicture", currentPicture.split("/images/")[1]); // Kirim nama file gambar lama
+  if (newPicture) {
+    formData.append("picture", newPicture);
+  } else {
+    const currentPicture = $("#currentPicture").attr("src");
+    if (currentPicture) {
+      // Kirim nama file gambar lama yang sudah ada
+      const currentPictureName = currentPicture.split("/images/")[1]; // Ambil nama file gambar
+      formData.append("currentPicture", currentPictureName); // Kirim nama gambar lama
+    }
   }
-}
-
 
   $.ajax({
-    url: "/update/films/" + editId, // Correct URL with film ID
+    url: "/update/films/" + editId, // Pastikan URL mengarah ke ID film yang benar
     type: "PUT",
     processData: false,
     contentType: false,
@@ -257,7 +258,7 @@ if (newPicture) {
         text: 'Detail film berhasil diperbarui.',
         confirmButtonText: 'OK'
       }).then(() => {
-        location.reload(); // Reload page after update
+        location.reload(); // Reload halaman setelah update
       });
     },
     error: function (error) {
@@ -265,6 +266,7 @@ if (newPicture) {
     },
   });
 });
+
 
 
 
