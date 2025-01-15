@@ -30,7 +30,7 @@
               <td><%= film.duration %></td>
               <td><%= film.description %></td>
               <td>
-                <img src="<%= film.picture ? '/images/' + film.picture : '/default-image.jpg' %>" alt="Film Picture" width="100">
+                <img src="<%= film.picture ? '/images/' + film.picture : '/images/' %>" alt="Film Picture" width="100">
             </td>
               <td>
               <div class="actions">
@@ -112,8 +112,10 @@
             <div class="mb-3">
               <label for="editPicture" class="form-label">Picture</label>
               <input type="file" class="form-control" id="editPicture" accept="image/*">
+              <!-- Display current picture -->
               <img id="currentPicture" src="" class="img-thumbnail mt-3" style="max-width: 200px; display: none;">
             </div>
+            
             <button type="submit" class="btn-actionAdm btn-primary">Update</button>
           </form>
         </div>
@@ -192,29 +194,35 @@ $("#addFilmForm").on("submit", function (e) {
 });
 
 
-      // Handle Edit Film
-      let editId;
-      $(".editBtn").on("click", function () {
-        editId = $(this).data("id_film");
+ // Handle Edit Film
+// Handle Edit Film
+let editId;
+$(".editBtn").on("click", function () {
+  editId = $(this).data("id_film");
 
-        const currentTitle = $(this).closest("tr").find("td").eq(0).text();
-        const currentGenre = $(this).closest("tr").find("td").eq(1).text();
-        const currentDuration = $(this).closest("tr").find("td").eq(2).text();
-        const currentDescription = $(this).closest("tr").find("td").eq(3).text();
-        const currentPicture = $(this).data("picture");
+  const currentTitle = $(this).closest("tr").find("td").eq(0).text();
+  const currentGenre = $(this).closest("tr").find("td").eq(1).text();
+  const currentDuration = $(this).closest("tr").find("td").eq(2).text();
+  const currentDescription = $(this).closest("tr").find("td").eq(3).text();
+  const currentPicture = $(this).data("picture");
 
-        $("#editTitle").val(currentTitle);
-        $("#editGenre").val(currentGenre);
-        $("#editDuration").val(currentDuration);
-        $("#editDescription").val(currentDescription);
+  // Set the values for the form
+  $("#editTitle").val(currentTitle);
+  $("#editGenre").val(currentGenre);
+  $("#editDuration").val(currentDuration);
+  $("#editDescription").val(currentDescription);
 
-        $("#currentPicture").attr("src", currentPicture).show();
+  // Check if there is a current picture and display it
+  if (currentPicture) {
+    $("#currentPicture").attr("src", "/images/" + currentPicture).show(); // Show current picture
+  } else {
+    $("#currentPicture").hide(); // Hide picture if no current image
+  }
 
-        $("#editFilmModal").modal("show");
-      });
+  // Show the Edit Film Modal
+  $("#editFilmModal").modal("show");
+});
 
-      // Handle Update Film
-      // Handle Update Film
 // Handle Update Film
 $("#editFilmForm").on("submit", function (e) {
   e.preventDefault();
@@ -226,9 +234,15 @@ $("#editFilmForm").on("submit", function (e) {
   formData.append("description", $("#editDescription").val());
 
   const newPicture = $("#editPicture")[0].files[0];
-  if (newPicture) {
-    formData.append("picture", newPicture);
+if (newPicture) {
+  formData.append("picture", newPicture);
+} else {
+  const currentPicture = $("#currentPicture").attr("src");
+  if (currentPicture) {
+    formData.append("currentPicture", currentPicture.split("/images/")[1]); // Kirim nama file gambar lama
   }
+}
+
 
   $.ajax({
     url: "/update/films/" + editId, // Correct URL with film ID
@@ -251,6 +265,8 @@ $("#editFilmForm").on("submit", function (e) {
     },
   });
 });
+
+
 
 
 

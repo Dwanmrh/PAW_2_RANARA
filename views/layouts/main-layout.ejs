@@ -37,26 +37,26 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
+              <li class="nav-item mx-2">
                 <a class="nav-link <%= currentPath === '/home' ? 'active' : '' %>" href="/home">Home</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item mx-2"  id="orderLink">
                 <a class="nav-link <%= currentPath === '/movie-form' ? 'active' : '' %>"href="/order">Order</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item mx-2">
                 <a class="nav-link <%= currentPath === '/detail' ? 'active' : '' %>" href="/detail">Ticket</a>
                 
                 <!-- Tampilkan link admin hanya jika pengguna adalah admin -->
                 <% if (role === "admin") { %>
-                  <li class="nav-item">
+                  <li class="nav-item mx-2">
                     <a class="nav-link <%= currentPath === '/mngUser' ? 'active' : '' %>" href="/mngUser">Manage Users</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link <%= currentPath === '/admin' ? 'active' : '' %>" href="/admin">Admin</a>
+                  <li class="nav-item mx-2">
+                    <a class="nav-link <%= currentPath === '/admin' ? 'active' : '' %>" href="/admin">Manage Admin</a>
                   </li>
                 <% } %>
               </li>
-              <li class="nav-item">
+              <li class="nav-item mx-3">
                 <form action="/logout" method="POST" class="d-inline">
                   <a class="btn btn-link nav-link" href="/">Logout</a>
                 </form>

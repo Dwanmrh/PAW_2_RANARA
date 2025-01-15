@@ -24,21 +24,27 @@ body::-webkit-scrollbar {
 
 h1,
 h5 {
-  color: #2c3e50;
+  color: #152534;
   text-align: center;
   padding-top: 10px;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
+  font-weight: bold;
   font-family: 'Poppins', sans-serif;;
 }
 /* p{
   padding-bottom: 0;
 } */
 h6{
-  font-size: 12px;
-  padding-top: 0;
+  font-size: 14px;
+  padding-top: 5px;
   padding-bottom: 10px;
 }
 
+span{
+  color: #ffe714;
+  font-weight: bold;
+  font-style: italic;
+}
 .navbar {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 20px; /* Membuat sudut melengkung */
@@ -227,6 +233,28 @@ footer a:hover {
   text-decoration: underline;
 }
 
+
+footer ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+footer ul li {
+  margin-bottom: 5px; /* Space between links */
+}
+
+footer ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 5px;
+}
+
+footer ul li a:hover {
+  text-decoration: underline; /* Optional: add hover effect for links */
+}
+
+
 /* Text decoration for completed tasks */
 .completed {
   text-decoration: line-through;
@@ -295,14 +323,16 @@ footer a:hover {
 h1 {
   text-align: center;
   margin-bottom: 1rem;
-  font-family: 'Poltawski Nowy';
+  font-family: 'Poppins';
+  text-transform: uppercase;
   color: black;
 }
 
 p {
   text-align:center;
-  margin-top: 10px
+  margin-top: 20px;
 }
+
 
 /* Mengubah font placeholder hanya pada form input login */
 .card-right input::placeholder {
@@ -377,7 +407,10 @@ p {
 .table th{
   font-weight: bold;
   font-size: 18px;
-  padding: 10px;
+  padding: 15px;
+  color: white;
+  background-color: #05426b;
+  text-align: center;
 }
 
 .table td{
@@ -388,6 +421,7 @@ p {
 .table td:last-child {
   width: 100px; /* Sesuaikan dengan kebutuhan */
 }
+
 
 .actions {
   display: flex;
@@ -997,27 +1031,6 @@ button.btn-close {
   margin-bottom: 15px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .ticket-details {
   background-color: #f3e9e4;
   padding: 15px;
@@ -1028,6 +1041,7 @@ button.btn-close {
   position: relative;
   font-family: 'Courier New', Courier, monospace;
   font-size: 14px;
+  font-weight: 600;
   display: flex;
   flex-direction: column-reverse; /* Menyusun konten secara vertikal */
   justify-content: center; /* Menengahkan konten secara vertikal */
@@ -1036,10 +1050,6 @@ button.btn-close {
   width: 100%;
   
 }
-
-
-
-
 
 .ticket-details i {
   color: #182231; /* Ikon berwarna biru Bootstrap */
@@ -1053,8 +1063,6 @@ button.btn-close {
 .ticket-details div {
   margin-bottom: 5px; /* Spasi antar item */
 }
-
-
 
 .ticket-details::before,
 .ticket-details::after {
@@ -1083,8 +1091,6 @@ button.btn-close {
   transform: translateY(50%);
 }
 
-
-
 .barcode {
   background-color: #75727254;
   height: 50px;
@@ -1105,9 +1111,6 @@ button.btn-close {
   margin: 0 1px;
   flex: 1;
 }
-
-
-
 
 .ticket-card::before {
   content: '';
@@ -1150,7 +1153,10 @@ button.btn-close {
   border-bottom: 3px solid #05426b;
 }
 
-/*  
-  text-align:center;
-  margin-top: 5px
-} */
+.card-body{
+  font-family: 'Poppins';
+}
+/* Sembunyikan menu Order */
+#orderLink {
+  display: none; /* Menyembunyikan elemen Order */
+}

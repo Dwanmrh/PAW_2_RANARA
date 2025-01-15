@@ -3,10 +3,9 @@
     <div class="row">
       <!-- Bagian Paragraf -->
       <div class="col-md-4">
-        <h3 class="fw-bold">RANARA CINEMA</h3>
-        <p>
-          Ranara Cinema Adalah Bioskop yang didirikan oleh sekelompok Mahasiswa TI yang memiliki hobi menonton film.
-          Ranara Cinema berdiri sejak tahun 2024.
+        <h3 class="fw-bold" style="margin-top: 30px">RANARA CINEMA</h3>
+        <p class="text-justify" style="margin: 30px 20px 0 20px; text-align: justify;">
+          <span>Booking Tiket Film Favorit Anda di Ranara Cinema.</span> Pesan tiket bioskop favorit Anda secara online di Ranara Cinema dengan proses cepat, aman, dan nyaman. Jangan lewatkan film terbaru, pesan tiket Anda sekarang juga! 
         </p>
       </div>
 
@@ -15,22 +14,30 @@
 
       <!-- Bagian Link Navigasi -->
       <div class="col-md-4">
-        <ul class="list-unstyled mt-4">
-          <li class="mb-2">
+        <ul class="list-unstyled" style="margin-top: 40px">
+          <li class="mb-3">
             <a href="/home" class="text-white text-decoration-none">Home</a>
           </li>
-          <li class="mb-2">
-            <a href="/order" class="text-white text-decoration-none">Order</a>
+          <li class="mb-3">
+            <a href="/detail" class="text-white text-decoration-none">Tiket</a>
           </li>
-          <li class="mb-2">
-            <a href="ticket" class="text-white text-decoration-none">Tiket</a>
-          </li>
+
+          <!-- Tampilkan link admin hanya jika pengguna adalah admin -->
+          <% if (role === "admin") { %>
+            <li class="mb-3">
+              <a href="/mngUser" class="text-white text-decoration-none">Manage Users</a>
+            </li>
+            <li class="mb-3">
+              <a href="/admin" class="text-white text-decoration-none">Manage Admin</a>
+            </li>
+          <% } %>
         </ul>
       </div>
     </div>
   </div>
+  
   <!-- Bagian Footer Hak Cipta -->
-  <div class="text-center-footer py-2">
-    <p class="mb-0">© 2024 RANARA Cinema. All rights reserved.</p>
+  <div class="d-flex justify-content-center ">
+    <p class="mb-0">© 2025 Kelompok 2. All rights reserved.</p>
   </div>
 </footer>

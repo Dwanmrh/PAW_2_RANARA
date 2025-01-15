@@ -10,8 +10,8 @@ app.use(router);
 describe('POST /signup', () => {
   it('should register a new user successfully', async () => {
     const newUser = {
-      nama: 'Anggi Puspita',
-      username: 'anggi',
+      nama: 'AnggiTAA',
+      username: 'anggi123',
       password: 'anggi123',
       email: 'anggi@gmail.com',
       role: 'user', // Optional field

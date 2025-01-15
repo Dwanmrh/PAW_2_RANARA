@@ -23,11 +23,11 @@
         <tbody>
           <% users.forEach(user => { %>
             <tr>
-              <td><%= user.nama %></td>
-              <td><%= user.username %></td>
-              <td><%= user.password %></td>
-              <td><%= user.email %></td>
-              <td><%= user.role %></td>
+              <td align="center" valign="middle"><%= user.nama %></td>
+              <td align="center" valign="middle"><%= user.username %></td>
+              <td align="center" valign="middle"><%= user.password %></td>
+              <td align="center" valign="middle"><%= user.email %></td>
+              <td align="center" valign="middle"><%= user.role %></td>
               <td>
               <div class="actions">
                 <button class="button editBtn" data-id_user="<%= user.id_user %>"><i data-feather="edit-3"></i></button>

@@ -17,7 +17,7 @@
             
             <div class="d-flex align-items-center">
               <i class="fas fa-film me-2 text-primary"></i>
-              
+              <span id="filmTitle"></span>
             </div>
             <div class="d-flex align-items-center">
               <i class="fas fa-map-marker-alt me-2 text-danger"></i>RANARA
@@ -167,7 +167,7 @@
         return response.json();
       })
       .then((film) => {
-        const filmTitleElement = document.querySelector(".d-flex.align-items-center i");
+        const filmTitleElement = document.querySelector("#filmTitle");
         if (filmTitleElement) {
           filmTitleElement.textContent = film.title;
         } else {
@@ -352,6 +352,15 @@
     filmTitleElement.textContent = "";
   }
 }
+qrOkButton.addEventListener("click", () => {
+  qrModal.hide();
+  successModal.show();
+  resetForm();
+  
+  successModal._element.addEventListener('hidden.bs.modal', function () {
+    window.location.href = '/detail'; 
+  });
+});
 
 });
 
