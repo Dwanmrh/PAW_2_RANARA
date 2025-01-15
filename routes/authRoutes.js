@@ -115,28 +115,35 @@ router.put("/update/films/:id", upload.single("picture"), (req, res) => {
     if (results.length === 0)
       return res.status(404).json({ message: "Film tidak ditemukan" });
 
-    // Update data di database
-    const queryUpdate =
-      "UPDATE films SET title = ?, genre = ?, duration = ?, description = ?, picture = ? WHERE id_film = ?";
-    db.query(
-      queryUpdate,
-      [title, genre, duration, description, newPicture, id],
-      (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
+    const oldPicture = results[0].picture;// Update data di database
+    let queryUpdate;
+    let queryParams;
 
-        // Hapus file lama jika ada file baru
-        if (newPicture) {
-          const filePath = path.join(__dirname, "public/images");
-          fs.unlink(filePath, (err) => {
-            if (err) console.error("Gagal menghapus file lama:", err.message);
-          });
-        }
+    if (newPicture) {
+      // Jika ada file baru, update dengan gambar baru
+      queryUpdate =
+        "UPDATE films SET title = ?, genre = ?, duration = ?, description = ?, picture = ? WHERE id_film = ?";
+      queryParams = [title, genre, duration, description, newPicture, id];
+    } else {
+      // Jika tidak ada file baru, jangan ubah kolom picture
+      queryUpdate =
+        "UPDATE films SET title = ?, genre = ?, duration = ?, description = ? WHERE id_film = ?";
+      queryParams = [title, genre, duration, description, id];
+    }
 
-        res
-          .status(200)
-          .json({ message: "Film berhasil diperbarui", data: result });
+    db.query(queryUpdate, queryParams, (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+
+      // Jika ada file baru, hapus file lama
+      if (newPicture && oldPicture) {
+        const filePath = path.join(__dirname, "../public/images", oldPicture);
+        fs.unlink(filePath, (err) => {
+          if (err) console.error("Gagal menghapus file lama:", err.message);
+        });
       }
-    );
+
+      res.status(200).json({ message: "Film berhasil diperbarui", data: result });
+    });
   });
 });
 
