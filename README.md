@@ -1,5 +1,7 @@
 USE CASE KELOMPOK 2
 
+Link Report: https://umyac-my.sharepoint.com/:w:/g/personal/anggi_puspita_ft22_mail_umy_ac_id/EWFnmc3raSBFtoH5_OW-m2EBHg8_w2yqhLe268EFPN9KuQ?rtime=AMNi6CA63Ug
+
 NAMA ANGGOTA: 
 
 Nauval Achid - 20220140117
